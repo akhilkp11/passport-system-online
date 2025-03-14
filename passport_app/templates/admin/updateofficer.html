@@ -1,0 +1,68 @@
+{% extends 'home.html' %}
+{% block content %}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-10 col-lg-8">
+            <div class="registration-container">
+                <h2 class="form-header">Passport Officer Registration</h2>
+                
+                <!-- Update Form -->
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="name" class="form-label">Full Name</label>
+                            {{ form.name }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="email" class="form-label">Email Address</label>
+                            {{ form.email }}
+                        </div>
+                    </div>
+                
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="employee_id" class="form-label">Employee ID</label>
+                            {{ form.employee_id }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="phone_number" class="form-label">Phone Number</label>
+                            {{ form.phone_number }}
+                        </div>
+                    </div>
+                
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="branch_location" class="form-label">Branch Location</label>
+                            {{ form.branch_location }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="assigned_region" class="form-label">Assigned Region</label>
+                            {{ form.assigned_region }}
+                        </div>
+                    </div>
+                
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="date_of_joining" class="form-label">Date of Joining</label>
+                            {{ form.date_of_joining }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="status" class="form-label">Status</label>
+                            {{ form.status }}
+                        </div>
+                    </div>
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary btn-lg">UPDATE</button>
+                    </div>
+                </form>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

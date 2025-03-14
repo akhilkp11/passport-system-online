@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verification Officer Login - Passport System</title>
+    <style>
+        :root {
+            --primary-color: #0056b3;
+            --secondary-color: #6c757d;
+            --success-color: #28a745;
+            --danger-color: #dc3545;
+            --light-color: #f8f9fa;
+            --dark-color: #343a40;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-image: linear-gradient(135deg, rgba(0, 86, 179, 0.1) 0%, rgba(0, 86, 179, 0.05) 100%);
+        }
+        
+        .container {
+            display: flex;
+            max-width: 900px;
+            margin:2%;
+            width: 100%;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            background-color: white;
+        }
+        
+        .login-image {
+            flex: 1;
+            background-image: url("/api/placeholder/500/600");
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 30px;
+            position: relative;
+        }
+        
+        .login-image::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 50%;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+        }
+        
+        .image-content {
+            color: white;
+            z-index: 1;
+            position: relative;
+        }
+        
+        .image-content h2 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+        
+        .image-content p {
+            font-size: 1rem;
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+        
+        .login-form {
+            flex: 1;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .logo img {
+            height: 50px;
+            margin-right: 15px;
+        }
+        
+        .logo-text {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        .form-header {
+            margin-bottom: 30px;
+        }
+        
+        .form-header h1 {
+            color: var(--dark-color);
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+        
+        .form-header p {
+            color: var(--secondary-color);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark-color);
+        }
+        
+        .input-group {
+            position: relative;
+        }
+        
+        .input-group i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--secondary-color);
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px 12px 12px 40px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.2);
+        }
+        
+        .forgotten-password {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+        
+        .forgotten-password a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        .forgotten-password a:hover {
+            text-decoration: underline;
+        }
+        
+        .remember-me {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .remember-me input {
+            width: auto;
+            margin-right: 10px;
+        }
+        
+        .btn {
+            padding: 14px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            width: 100%;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #004494;
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+        
+        .btn-outline:hover {
+            background-color: rgba(0, 86, 179, 0.1);
+        }
+        
+        .login-footer {
+            margin-top: 30px;
+            text-align: center;
+            color: var(--secondary-color);
+            font-size: 14px;
+        }
+        
+        .login-footer a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        
+        .login-footer a:hover {
+            text-decoration: underline;
+        }
+        
+        .system-notice {
+            margin-top: auto;
+            padding-top: 20px;
+            font-size: 13px;
+            color: var(--secondary-color);
+            border-top: 1px solid #eee;
+        }
+        
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+            color: var(--secondary-color);
+        }
+        
+        .divider::before,
+        .divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background-color: #eee;
+        }
+        
+        .divider span {
+            padding: 0 10px;
+            font-size: 14px;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                max-width: 100%;
+                height: 100%;
+            }
+            
+            .login-image {
+                display: none;
+            }
+            
+            .login-form {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="login-image">
+            <div class="image-content">
+                <h2>Passport Verification Portal</h2>
+                <p>Secure verification system for passport authorities</p>
+            </div>
+        </div>
+        
+        <div class="login-form">
+            <br>
+            <br>
+            <br>
+            <div class="logo">
+                <img src="/api/placeholder/50/50" alt="Passport Authority Logo" />
+                <div class="logo-text">National Passport Authority</div>
+            </div>
+            
+            <div class="form-header">
+                <h1>Verification Officer Login</h1>
+                <p>Enter your credentials to access the verification portal</p>
+            </div>
+            
+            <form id="loginForm" method="post" action="{% url 'dashboard_verifer' %}">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="employeeId">Employee ID</label>
+                    <div class="input-group">
+                        <i>👤</i>
+                        <input type="text" id="employeeId" name="employeeId" placeholder="Enter your employee ID" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <div class="input-group">
+                        <i>🔒</i>
+                        <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                    </div>
+                </div>
+                
+                <div class="forgotten-password">
+                    <a href="#">Forgot password?</a>
+                </div>
+                
+                <div class="remember-me">
+                    <input type="checkbox" id="rememberMe" name="rememberMe">
+                    <label for="rememberMe">Remember me on this device</label>
+                </div>
+                
+                <button type="submit" class="btn btn-primary" >Login to Dashboard</button>
+
+                
+                <div class="divider">
+                    <span>OR</span>
+                </div>
+                
+                <a href="{% url 'register' %}" class="btn btn-outline">Register as New Verification Officer</a>
+                
+                <div class="login-footer">
+                    <p>Technical support: <a href="mailto:support@passport.gov">support@passport.gov</a></p>
+                </div>
+                
+                <div class="system-notice">
+                    <p>This is a secure government system. Unauthorized access is prohibited and may be subject to legal action.</p>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+   
+</body>
+</html>

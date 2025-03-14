@@ -1,0 +1,1110 @@
+{% extends 'dashboard.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Passport Application System</title>
+    <style>
+        :root {
+            --primary-color: #1a5276;
+            --secondary-color: #2980b9;
+            --accent-color: #3498db;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+            --success-color: #27ae60;
+            --warning-color: #f39c12;
+            --error-color: #e74c3c;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 20px 0;
+            border-radius: 8px 8px 0 0;
+            margin-bottom: 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 300px;
+            height: 100%;
+            background-image: url('/api/placeholder/300/100');
+            background-size: cover;
+            opacity: 0.2;
+        }
+        
+        header h1 {
+            margin-left: 20px;
+            font-weight: 700;
+            position: relative;
+            z-index: 1;
+        }
+        
+        header p {
+            margin-left: 20px;
+            margin-top: 10px;
+            font-size: 16px;
+            max-width: 70%;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            margin-left: 20px;
+        }
+        
+        .logo img {
+            height: 60px;
+            margin-right: 15px;
+        }
+        
+        .progress-container {
+            background: white;
+            padding: 20px;
+            border-radius: 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .progress-bar {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin-bottom: 30px;
+            counter-reset: step;
+        }
+        
+        .progress-bar::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            height: 4px;
+            width: 100%;
+            background-color: #ddd;
+            z-index: 1;
+        }
+        
+        .progress-step {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background-color: white;
+            border: 4px solid #ddd;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            color: #666;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .progress-step.active {
+            border-color: var(--success-color);
+            color: var(--success-color);
+        }
+        
+        .progress-step.completed {
+            background-color: var(--success-color);
+            border-color: var(--success-color);
+            color: white;
+        }
+        
+        .progress-label {
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 12px;
+            white-space: nowrap;
+            color: #666;
+        }
+        
+        .progress-step.active .progress-label {
+            font-weight: bold;
+            color: var(--dark-color);
+        }
+        
+        .form-container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .form-section {
+            margin-bottom: 40px;
+        }
+        
+        .form-section:last-child {
+            margin-bottom: 0;
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+        
+        .section-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 15px;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .section-title {
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0 -15px;
+        }
+        
+        .form-group {
+            flex: 1 0 calc(33.33% - 30px);
+            margin: 0 15px 20px;
+            min-width: 250px;
+        }
+        
+        .form-group.large {
+            flex: 1 0 calc(50% - 30px);
+        }
+        
+        .form-group.full {
+            flex: 1 0 calc(100% - 30px);
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark-color);
+        }
+        
+        .required::after {
+            content: '*';
+            color: var(--error-color);
+            margin-left: 4px;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+        
+        .hint {
+            display: block;
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .input-group {
+            display: flex;
+        }
+        
+        .input-group input {
+            flex: 1;
+        }
+        
+        .input-group input:not(:last-child) {
+            border-radius: 4px 0 0 4px;
+        }
+        
+        .input-group .input-action {
+            padding: 12px 15px;
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+        }
+        
+        .checkbox-group, .radio-group {
+            margin-bottom: 15px;
+        }
+        
+        .checkbox-item, .radio-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .checkbox-item input, .radio-item input {
+            width: auto;
+            margin-right: 10px;
+        }
+        
+        .file-upload {
+            display: flex;
+            flex-direction: column;
+            border: 2px dashed #ddd;
+            padding: 20px;
+            border-radius: 4px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .file-upload:hover {
+            border-color: var(--accent-color);
+            background-color: rgba(52, 152, 219, 0.05);
+        }
+        
+        .file-upload input {
+            display: none;
+        }
+        
+        .file-icon {
+            font-size: 24px;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+        
+        .upload-text {
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+        
+        .upload-hint {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #154360;
+        }
+        
+        .btn-secondary {
+            background-color: #e0e0e0;
+            color: #333;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #d0d0d0;
+        }
+        
+        .signature-pad {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 100%;
+            height: 150px;
+            background-color: #f9f9f9;
+            margin-top: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #888;
+        }
+        
+        .info-tooltip {
+            display: inline-block;
+            position: relative;
+            width: 18px;
+            height: 18px;
+            background-color: #ddd;
+            color: #555;
+            border-radius: 50%;
+            text-align: center;
+            font-size: 12px;
+            line-height: 18px;
+            margin-left: 8px;
+            font-weight: bold;
+            cursor: help;
+        }
+        
+        .info-tooltip:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            padding: 10px;
+            border-radius: 4px;
+            background-color: var(--dark-color);
+            color: white;
+            text-align: center;
+            font-size: 12px;
+            line-height: 1.4;
+            z-index: 100;
+        }
+        
+        .alert {
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .alert-info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        
+        .alert-warning {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px 0;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        @media (max-width: 768px) {
+            .progress-container {
+                overflow-x: auto;
+                padding-bottom: 30px;
+            }
+            
+            .progress-bar {
+                width: 800px;
+                padding-bottom: 0;
+            }
+            
+            .form-group {
+                flex: 1 0 calc(50% - 30px);
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .form-group {
+                flex: 1 0 calc(100% - 30px);
+            }
+            
+            .section-icon {
+                width: 30px;
+                height: 30px;
+                font-size: 14px;
+            }
+            
+            .section-title {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <img src="/api/placeholder/60/60" alt="Passport Office Logo">
+                <div>
+                    <h1>Online Passport Application</h1>
+                    <p>Complete the form below to apply for a new passport or renew an existing one</p>
+                </div>
+            </div>
+        </header>
+        
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-step completed">
+                    1
+                    <span class="progress-label">Login</span>
+                </div>
+                <div class="progress-step active">
+                    2
+                    <span class="progress-label">Application</span>
+                </div>
+                <div class="progress-step">
+                    3
+                    <span class="progress-label">Documents</span>
+                </div>
+                <div class="progress-step">
+                    4
+                    <span class="progress-label">Payment</span>
+                </div>
+                <div class="progress-step">
+                    5
+                    <span class="progress-label">Review</span>
+                </div>
+                <div class="progress-step">
+                    6
+                    <span class="progress-label">Submit</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="alert alert-info">
+            Please fill out all required fields marked with an asterisk (*). Ensure that all information provided matches your supporting documents.
+        </div>
+        
+        <form method="POST" action="{% url 'application_form' %}"class="form-container">
+            {% csrf_token %}
+            <!-- 1. Personal Information -->
+            <div class="form-section">
+                <div class="section-header">
+                    <div class="section-icon">1</div>
+                    <h2 class="section-title">Personal Information</h2>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="firstName" class="required">First Name</label>
+                        <input type="text" name="first_name" id="firstName" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="middleName">Middle Name</label>
+                        <input type="text" name="middle_name" id="middleName">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="lastName" class="required">Last Name</label>
+                        <input type="text" name="last_name" id="lastName" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="dob" class="required">Date of Birth</label>
+                        <input type="date" name="date_of_birth" id="dob" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="birthCity" class="required">City of Birth</label>
+                        <input type="text" name="city_of_birth" id="birthCity" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="birthState" class="required">State/Province of Birth</label>
+                        <input type="text" name="state_of_birth" id="birthState" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="birthCountry" class="required">Country of Birth</label>
+                        <select id="birthCountry" name="country_of_birth" required>
+                            <option value="">Select Country</option>
+                            <option value="US">United States</option>
+                            <option value="CA">Canada</option>
+                            <option value="UK">United Kingdom</option>
+                            <option value="AU">Australia</option>
+                            <option value="IN">India</option>
+                            <!-- More countries would be added here -->
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="gender" class="required">Gender</label>
+                        <select id="gender" name="gender" required>
+                            <option value="">Select</option>
+                            <option value="M">Male</option>
+                            <option value="F">Female</option>
+                            <option value="O">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="maritalStatus" class="required">Marital Status</label>
+                        <select id="maritalStatus" name="marital_status" required>
+                            <option value="">Select</option>
+                            <option value="single">Single</option>
+                            <option value="married">Married</option>
+                            <option value="divorced">Divorced</option>
+                            <option value="widowed">Widowed</option>
+                            <option value="separated">Separated</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="nationality" class="required">Nationality</label>
+                        <select id="nationality" name="nationality" required>
+                            <option value="">Select Country</option>
+                            <option value="US">United States</option>
+                            <option value="CA">Canada</option>
+                            <option value="UK">United Kingdom</option>
+                            <option value="AU">Australia</option>
+                            <option value="IN">India</option>
+                            <!-- More countries would be added here -->
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="occupation" class="required">Occupation</label>
+                        <input type="text" name="occupation" id="occupation" required>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 2. Contact Information -->
+            <div class="form-section">
+                <div class="section-header">
+                    <div class="section-icon">2</div>
+                    <h2 class="section-title">Contact Information</h2>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group large">
+                        <label for="address1" class="required">Address Line 1</label>
+                        <input type="text" name="address_line1" id="address1" required>
+                    </div>
+                    
+                    <div class="form-group large">
+                        <label for="address2">Address Line 2</label>
+                        <input type="text" name="address_line2" id="address2">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="city" class="required">City</label>
+                        <input type="text" name="city" id="city" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="state" class="required">State/Province</label>
+                        <input type="text" name="state" id="state" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="zipCode" class="required">Postal/Zip Code</label>
+                        <input type="text" name="postal_code" id="zipCode" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="country" class="required">Country</label>
+                        <select id="country" name="country" required>
+                            <option value="">Select Country</option>
+                            <option value="US">United States</option>
+                            <option value="CA">Canada</option>
+                            <option value="UK">United Kingdom</option>
+                            <option value="AU">Australia</option>
+                            <option value="IN">India</option>
+                        </select>
+                    </div>
+                </div>
+                
+                
+                
+                <!-- Mailing address fields (hidden by default) would go here -->
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="phone" class="required">Phone Number</label>
+                        <input type="tel" name="phone_number" id="phone" required>
+                        <span class="hint">Include country code</span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email" class="required">Email Address</label>
+                        <input type="email" name="email"  id="email" required>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 3. Identification Details -->
+            <div class="form-section">
+                <div class="section-header">
+                    <div class="section-icon">3</div>
+                    <h2 class="section-title">Identification Details</h2>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="idType">Choose ID Type</label>
+                        <select id="idType" name="id_type">
+                            <option value="" disabled selected>Select ID Type</option>
+                            <option value="aadhar">Aadhar Card</option>
+                            <option value="pan">PAN Card</option>
+                            <option value="passport">Passport</option>
+                            <option value="voter">Voter ID</option>
+                            <option value="driving">Driving License</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="idNumber">ID Number</label>
+                        <input type="text" name="id_number" id="idNumber" placeholder="Enter ID Number">
+                    </div>
+                </div>
+                
+
+                
+            
+            </div>
+            
+            <!-- 4. Parental Information -->
+            <div class="form-section">
+                <div class="section-header">
+                    <div class="section-icon">4</div>
+                    <h2 class="section-title">Parental Information</h2>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group large">
+                        <label for="fatherName" class="required">Father's Full Name</label>
+                        <input type="text" name="father_name" id="fatherName" required>
+                    </div>
+                    
+                    <div class="form-group large">
+                        <label for="motherName" class="required">Mother's Full Name</label>
+                        <input type="text" name="mother_name" id="motherName" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="fatherNationality" class="required">Father's Nationality</label>
+                        <select id="fatherNationality" name="father_nationality" required>
+                            <option value="">Select Country</option>
+                            <option value="US">United States</option>
+                            <option value="CA">Canada</option>
+                            <option value="UK">United Kingdom</option>
+                            <option value="AU">Australia</option>
+                            <option value="IN">India</option>
+                            <!-- More countries would be added here -->
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="motherNationality" class="required">Mother's Nationality</label>
+                        <select id="motherNationality" name="mother_nationality" required>
+                            <option value="">Select Country</option>
+                            <option value="US">United States</option>
+                            <option value="CA">Canada</option>
+                            <option value="UK">United Kingdom</option>
+                            <option value="AU">Australia</option>
+                            <option value="IN">India</option>
+                            <!-- More countries would be added here -->
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="fatherPassportNum">Father's Passport Number</label>
+                        <input type="text" name="father_passport_number" id="fatherPassportNum">
+                        <span class="hint">If applicable</span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="motherPassportNum">Mother's Passport Number</label>
+                        <input type="text" name="mother_passport_number" id="motherPassportNum">
+                        <span class="hint">If applicable</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 5. Emergency Contact -->
+            <div class="form-section">
+                <div class="section-header">
+                    <div class="section-icon">5</div>
+                    <h2 class="section-title">Emergency Contact</h2>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group large">
+                        <label for="emergencyName" class="required">Full Name</label>
+                        <input type="text" name="emergency_contact_name" id="emergencyName" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="emergencyRelation" class="required">Relationship to Applicant</label>
+                        <input type="text" name="emergency_contact_relationship" id="emergencyRelation" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="emergencyPhone" class="required">Contact Number</label>
+                        <input type="tel" name="emergency_contact_phone" id="emergencyPhone" required>
+                        <span class="hint">Include country code</span>
+                    </div>
+                    
+                    <div class="form-group large">
+                        <label for="emergencyAddress" class="required">Address</label>
+                        <input type="text" name="emergency_contact_address" id="emergencyAddress" required>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 6. Passport Type & Details -->
+            <div class="form-section">
+                <div class="section-header">
+                    <div class="section-icon">6</div>
+                    <h2 class="section-title">Passport Type & Details</h2>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="passportType" class="required">Type of Passport</label>
+                        <select id="passportType" name="passport_type" required>
+                            <option value="">Select</option>
+                            <option value="regular">Regular</option>
+                            <option value="official">Official</option>
+                            <option value="diplomatic">Diplomatic</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="pageCount" class="required">Number of Pages</label>
+                        <select id="pageCount" name="page_count" required>
+                            <option value="">Select</option>
+                            <option value="standard">Standard (36 pages)</option>
+                            <option value="extra">Extra (60 pages)</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group full">
+                        <label for="travelPurpose" class="required">Purpose of Travel</label>
+                        <select id="travelPurpose" name="travel_purpose" required>
+                            <option value="">Select</option>
+                            <option value="tourism">Tourism</option>
+                            <option value="business">Business</option>
+                            <option value="study">Study</option>
+                            <option value="employment">Employment</option>
+                            <option value="family">Family Visit</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 7. Supporting Documents -->
+            <div class="form-section">
+                <div class="section-header">
+                    <div class="section-icon">7</div>
+                    <h2 class="section-title">Supporting Documents</h2>
+                </div>
+                
+                <div class="alert alert-warning">
+                    You will be asked to upload all required documents in the next step. Please make sure you have digital copies of all required documents before proceeding.
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="document_national_id">National ID Upload</label>
+                        <input type="file" name="document_national_id" id="document_national_id">
+                    </div>
+                    <div class="form-group">
+                        <label for="document_birth_cert">Birth Certificate Upload</label>
+                        <input type="file" name="document_birth_cert" id="document_birth_cert">
+                    </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="driverLicenseCheck" name="proof_of_identity" value="driverLicense">
+                                <label for="driverLicenseCheck">Driver's License</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Proof of Address Section -->
+                    <div class="form-group large">
+                        <label>Proof of Address</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="utilityBillCheck" name="proof_of_address" value="utilityBill">
+                                <label for="utilityBillCheck">Utility Bill</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="bankStatementCheck" name="proof_of_address" value="bankStatement">
+                                <label for="bankStatementCheck">Bank Statement</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="leaseAgreementCheck" name="proof_of_address" value="leaseAgreement">
+                                <label for="leaseAgreementCheck">Lease Agreement</label>
+                            </div>
+                        </div>
+                    </div>
+
+                     <!-- 8. Payment Details -->
+            <div class="form-section ">
+                <div class="section-header">
+                    <div class="section-icon">8</div>
+                    <h2 class="section-title">Payment Details</h2>
+                </div>
+                
+                <div class="alert alert-info">
+                    Payment will be processed in the next step. Below are the application fees and payment methods accepted.
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group large">
+                        <label>Application Fee</label>
+                        <div class="form-control-static">
+                            <strong>Regular Passport (36 pages):</strong> $145.00<br>
+                            <strong>Regular Passport (60 pages):</strong> $175.00<br>
+                            <strong>Expedited Service (optional):</strong> +$60.00
+                        </div>
+                    </div>
+                    
+                    <div class="form-group large">
+                        <label>Accepted Payment Methods</label>
+                        <div class="form-control-static">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="paymentOnline" name="payment_method" value="online" checked>
+                                <label for="paymentOnline">Online Payment (Credit/Debit Card)</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="paymentBankTransfer" name="payment_method" value="bankTransfer">
+                                <label for="paymentBankTransfer">Bank Transfer</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="paymentChallan" name="payment_method" value="challan">
+                                <label for="paymentChallan">Bank Challan</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group full">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="expeditedService" name="expedited_service" value="yes">
+                            <label for="expeditedService">I would like to request expedited service (+$60.00)</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 9. Declaration & Signature -->
+            <div class="form-section">
+                <div class="section-header">
+                    <div class="section-icon">9</div>
+                    <h2 class="section-title">Declaration & Signature</h2>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group full">
+                        <div class="declaration-box" style="background-color: #f9f9f9; padding: 20px; border-radius: 4px; margin-bottom: 20px;">
+                            <h4 style="margin-top: 0; margin-bottom: 15px;">Declaration</h4>
+                            <p>I, the undersigned, hereby declare that:</p>
+                            <ol style="margin-left: 20px; margin-bottom: 15px;">
+                                <li>The information provided in this application is true, complete and correct.</li>
+                                <li>I am aware that providing false information may result in rejection of my application and may lead to legal action.</li>
+                                <li>I authorize the Passport Office to verify the information provided and to contact me for additional details if necessary.</li>
+                                <li>I understand that my passport may be revoked if it is determined that it was obtained fraudulently.</li>
+                                <li>I agree to abide by the laws and regulations governing passport issuance and use.</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group large">
+                        <label for="signature_file" class="required">Applicant's Signature</label>
+                        <div class="signature-upload">
+                            <input type="file" name="signature_file" id="signature_file" accept="image/png, image/jpeg" required>
+                            <button type="button" id="viewSignature" class="btn btn-secondary" disabled>View Uploaded Signature</button>
+                        </div>
+                        <span class="hint">Please upload an image file (.jpg, .png) of your signature</span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="applicationDate" class="required">Date of Application</label>
+                        <input type="date" name="application_date" id="applicationDate" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group full">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="parentalConsent" name="parental_consent">
+                            <label for="parentalConsent">Parental Consent (required for applicants under 18 years)</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group full">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="termsAgree" name="terms_agreed" required>
+                            <label for="termsAgree" class="required">I agree to the terms and conditions and consent to the processing of my personal data for the purpose of passport issuance</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="actions">
+                {% if application.id %}
+                    <form action="{% url 'payment_method' application_id=application.id %}" method="GET">
+                        <button type="submit" class="btn btn-primary">Next: Payment</button>
+                    </form>
+                {% else %}
+                    <button type="submit" class="btn btn-primary">Submit Application</button>
+                {% endif %}
+            </div>
+            
+
+                </div>
+                
+                <!-- Additional Documents Section -->
+               
+            </div>
+            
+            
+           
+        </form>
+        
+        <footer>
+            <p>&copy; 2025 National Passport Authority. All rights reserved.</p>
+            <p>For assistance, please contact our helpdesk at help@passport.gov.example or call +1-800-123-4567</p>
+        </footer>
+    </div>
+    
+    <script>
+        // Simple JavaScript to handle form interactions
+        document.addEventListener('DOMContentLoaded', function() {
+            // Toggle mailing address visibility based on radio selection
+            const sameAddressRadio = document.getElementById('sameAddress');
+            const differentAddressRadio = document.getElementById('differentAddress');
+            
+            // Previous passport fields visibility
+            const hasPrevPassportRadio = document.getElementById('hasPrevPassport');
+            const noPrevPassportRadio = document.getElementById('noPrevPassport');
+            const prevPassportFields = document.getElementById('prevPassportNum').closest('.form-row');
+            
+            // Initially hide the previous passport fields
+            prevPassportFields.style.display = 'none';
+            
+            // Show/hide previous passport fields based on selection
+            hasPrevPassportRadio.addEventListener('change', function() {
+                if (this.checked) {
+                    prevPassportFields.style.display = 'flex';
+                }
+            });
+            
+            noPrevPassportRadio.addEventListener('change', function() {
+                if (this.checked) {
+                    prevPassportFields.style.display = 'none';
+                }
+            });
+            
+            // Form validation example (basic)
+            const nextButton = document.querySelector('.btn-primary');
+            nextButton.addEventListener('click', function(e) {
+                const form = document.querySelector('form');
+                if (!form.checkValidity()) {
+                    e.preventDefault();
+                    alert('Please fill out all required fields before proceeding.');
+                } else {
+                    alert('Form is valid! Proceeding to document upload step.');
+                    // In a real application, this would navigate to the next step
+                }
+            });
+        });
+        document.getElementById('signatureFile').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                // Enable the view button when a file is selected
+                document.getElementById('viewSignature').disabled = false;
+            }
+        });
+        
+        document.getElementById('viewSignature').addEventListener('click', function() {
+            const fileInput = document.getElementById('signatureFile');
+            if (fileInput.files && fileInput.files[0]) {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    // Create a preview modal or popup
+                    const previewWindow = window.open("", "Signature Preview", "width=500,height=300");
+                    previewWindow.document.write(`
+                        <html>
+                        <head><title>Signature Preview</title></head>
+                        <body style="display:flex; justify-content:center; align-items:center; height:100vh; margin:0;">
+                            <img src="${e.target.result}" style="max-width:100%; max-height:100%; border:1px solid #ccc;">
+                        </body>
+                        </html>
+                    `);
+                }
+                
+                reader.readAsDataURL(fileInput.files[0]);
+            }
+        });
+       
+        
+    </script>
+    
+</body>
+</html>
+{% endblock %}

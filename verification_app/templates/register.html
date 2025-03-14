@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Registration</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .form-container {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin: 30px auto;
+            padding: 30px;
+            max-width: 1000px;
+        }
+        .form-header {
+            background: linear-gradient(90deg, #4e73df 0%, #224abe 100%);
+            margin: -30px -30px 30px -30px;
+            padding: 25px 30px;
+            border-radius: 15px 15px 0 0;
+            color: white;
+        }
+        .form-floating {
+            margin-bottom: 16px;
+        }
+        .btn-submit {
+            background: linear-gradient(90deg, #4e73df 0%, #224abe 100%);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            padding: 12px 0;
+            box-shadow: 0 4px 15px rgba(78, 115, 223, 0.3);
+        }
+        .required-field::after {
+            content: "*";
+            color: red;
+            margin-left: 3px;
+        }
+        .section-divider {
+            position: relative;
+            text-align: center;
+            margin: 30px 0;
+        }
+        .section-divider span {
+            background-color: white;
+            padding: 0 15px;
+            position: relative;
+            z-index: 2;
+            font-weight: 600;
+            color: #4e73df;
+        }
+        .section-divider:before {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 1px;
+            background-color: #e0e0e0;
+            top: 50%;
+            left: 0;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body class="py-5">
+    <div class="container">
+        <div class="form-container">
+            <div class="form-header">
+                <h2 class="text-center mb-0">Employee Registration</h2>
+                <p class="text-center mb-0 mt-2 opacity-75">Complete the form below to register a new employee</p>
+            </div>
+            
+            <form method="POST" action="" enctype="multipart/form-data" class="needs-validation" novalidate>
+                {% csrf_token %}
+                
+                <div class="section-divider">
+                    <span>Personal Information</span>
+                </div>
+                
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="id_employee_id" name="employee_id" placeholder=" " required>
+                            <label for="id_employee_id" class="required-field">Employee ID</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="id_govt_id" name="govt_id" placeholder=" " required>
+                            <label for="id_govt_id" class="required-field">Government ID</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-floating">
+                            <input type="password" class="form-control" id="id_password" name="password" placeholder=" " required>
+                            <label for="id_password" class="required-field">Password</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row g-3 mt-1">
+                    <div class="col-md-4">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="id_first_name" name="first_name" placeholder=" " required>
+                            <label for="id_first_name" class="required-field">First Name</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="id_middle_name" name="middle_name" placeholder=" ">
+                            <label for="id_middle_name">Middle Name</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="id_last_name" name="last_name" placeholder=" " required>
+                            <label for="id_last_name" class="required-field">Last Name</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row g-3 mt-1">
+                    <div class="col-md-4">
+                        <div class="form-floating">
+                            <input type="date" class="form-control" id="id_dob" name="dob" placeholder=" " required>
+                            <label for="id_dob" class="required-field">Date of Birth</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-floating">
+                            <select class="form-select" id="id_gender" name="gender" required>
+                                <option value="" selected disabled>Select gender</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other</option>
+                            </select>
+                            <label for="id_gender" class="required-field">Gender</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="id_photo" class="form-label required-field">Photo</label>
+                        <input type="file" class="form-control" id="id_photo" name="photo" required>
+                    </div>
+                </div>
+                
+                <div class="section-divider">
+                    <span>Contact Information</span>
+                </div>
+                
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <input type="email" class="form-control" id="id_official_email" name="official_email" placeholder=" " required>
+                            <label for="id_official_email" class="required-field">Official Email</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <input type="email" class="form-control" id="id_alternative_email" name="alternative_email" placeholder=" ">
+                            <label for="id_alternative_email">Alternative Email</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row g-3 mt-1">
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <input type="tel" class="form-control" id="id_mobile_number" name="mobile_number" placeholder=" " required>
+                            <label for="id_mobile_number" class="required-field">Mobile Number</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <input type="tel" class="form-control" id="id_emergency_contact" name="emergency_contact" placeholder=" " required>
+                            <label for="id_emergency_contact" class="required-field">Emergency Contact</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="section-divider">
+                    <span>Employment Details</span>
+                </div>
+                
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="id_designation" name="designation" placeholder=" " required>
+                            <label for="id_designation" class="required-field">Designation</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="id_department" name="department" placeholder=" " required>
+                            <label for="id_department" class="required-field">Department</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="id_location" name="location" placeholder=" " required>
+                            <label for="id_location" class="required-field">Location</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row g-3 mt-1">
+                    <div class="col-md-4">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="id_branch_code" name="branch_code" placeholder=" " required>
+                            <label for="id_branch_code" class="required-field">Branch Code</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-floating">
+                            <input type="date" class="form-control" id="id_joining_date" name="joining_date" placeholder=" " required>
+                            <label for="id_joining_date" class="required-field">Joining Date</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="id_reporting_officer" name="reporting_officer" placeholder=" " required>
+                            <label for="id_reporting_officer" class="required-field">Reporting Officer</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row g-3 mt-1">
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <select class="form-select" id="id_employment_type" name="employment_type" required>
+                                <option value="" selected disabled>Select type</option>
+                                <option value="permanent">Permanent</option>
+                                <option value="contract">Contract</option>
+                                <option value="intern">Intern</option>
+                            </select>
+                            <label for="id_employment_type" class="required-field">Employment Type</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <select class="form-select" id="id_user_role" name="user_role" required>
+                                <option value="" selected disabled>Select role</option>
+                                <option value="admin">Admin</option>
+                                <option value="manager">Manager</option>
+                                <option value="staff">Staff</option>
+                                <option value="other">Other</option>
+                            </select>
+                            <label for="id_user_role" class="required-field">User Role</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="section-divider">
+                    <span>Access & Authorization</span>
+                </div>
+                
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="id_jurisdiction" name="jurisdiction" placeholder=" " required>
+                            <label for="id_jurisdiction" class="required-field">Jurisdiction</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-floating">
+                            <select class="form-select" id="id_access_level" name="access_level" required>
+                                <option value="" selected disabled>Select level</option>
+                                <option value="1">Level 1</option>
+                                <option value="2">Level 2</option>
+                                <option value="3">Level 3</option>
+                            </select>
+                            <label for="id_access_level" class="required-field">Access Level</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-floating">
+                            <select class="form-select" id="id_verify_authority" name="verify_authority">
+                                <option value="" selected disabled>Select option</option>
+                                <option value="yes">Yes</option>
+                                <option value="no">No</option>
+                            </select>
+                            <label for="id_verify_authority">Verify Authority</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row g-3 mt-1">
+                    <div class="col-md-12">
+                        <label for="id_digital_signature" class="form-label">Digital Signature</label>
+                        <input type="file" class="form-control" id="id_digital_signature" name="digital_signature">
+                    </div>
+                </div>
+                
+                <div class="mt-4 mb-2">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="confirmInfo" required>
+                        <label class="form-check-label" for="confirmInfo">
+                            I confirm that all the information provided above is correct
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="d-grid mt-4">
+                    <button type="submit" class="btn btn-primary btn-lg btn-submit">
+                        Submit Registration
+                    </button>
+                </div>
+                
+            </form>
+        </div>
+    </div>
+</body>
+</html>

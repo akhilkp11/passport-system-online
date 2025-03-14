@@ -1,0 +1,176 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Service Request</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .track-container {
+            max-width: 800px;
+            margin: 3rem auto;
+            padding: 2rem;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        }
+        .page-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 1rem;
+        }
+        .form-control:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.25);
+        }
+        .btn-track {
+            background-color: #3498db;
+            border: none;
+            padding: 0.6rem 2rem;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        .btn-track:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+        .result-card {
+            border-left: 5px solid #3498db;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+        .status-badge {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            display: inline-block;
+        }
+        .status-success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .status-pending {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        .status-failed {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .info-group {
+            margin-bottom: 1rem;
+        }
+        .info-label {
+            font-weight: 600;
+            color: #6c757d;
+            margin-bottom: 0.25rem;
+        }
+        .info-value {
+            font-size: 1.1rem;
+        }
+        .alert-custom {
+            border-left: 5px solid #ffc107;
+        }
+        .order-id-icon {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container track-container">
+        <h1 class="page-header">Track Your Service Request</h1>
+        <div><a class="text-end" href="{% url 'dashboard' %}"><button class="btn btn-lg btn-outline-primary m-2 ">Back to Dashboard</button></a></div>
+        
+        <form method="GET" action="{% url 'track_service_request' %}" class="mb-4">
+            <div class="form-group mb-3">
+                <label for="order_id" class="form-label fw-bold">Enter Razorpay Order ID:</label>
+                <div class="position-relative">
+                    <input type="text" id="order_id" name="order_id" class="form-control form-control-lg" 
+                           placeholder="e.g., order_9A33XWu170gUtm" value="{{ query }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search order-id-icon" viewBox="0 0 16 16">
+                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                    </svg>
+                </div>
+                <div class="form-text">Please enter the order ID you received after placing your request</div>
+            </div>
+            <button type="submit" class="btn btn-track btn-lg mt-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search me-2" viewBox="0 0 16 16">
+                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                </svg>
+                Track Request
+            </button>
+            
+        </form>
+        
+        {% if payment %}
+        <div class="result-card">
+            <h3 class="mb-4">Application Details</h3>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="info-group">
+                        <div class="info-label">Application ID</div>
+                        <div class="info-value">{{ payment.application.id }}</div>
+                    </div>
+                    <div class="info-group">
+                        <div class="info-label">Applicant Name</div>
+                        <div class="info-value">{{ payment.application.first_name }} {{ payment.application.last_name }}</div>
+                    </div>
+                    <div class="info-group">
+                        <div class="info-label">Order ID</div>
+                        <div class="info-value">{{ payment.razorpay_order_id }}</div>
+                    </div>
+                    <div class="info-group">
+                        <div class="info-label">Payment ID</div>
+                        <div class="info-value">{{ payment.razorpay_payment_id }}</div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="info-group">
+                        <div class="info-label">Application Status</div>
+                        <div class="info-value">{{ payment.application.application_status }}
+                            <!-- {% if payment.status == 'success' %}
+                                <span class="status-badge status-success">Completed</span>
+                            {% elif payment.status == 'pending' %}
+                                <span class="status-badge status-pending">Pending</span>
+                            {% comment %} {% else %}
+                                <span class="status-badge status-failed">Failed</span> {% endcomment %}
+                            {% endif %} -->
+                        </div>
+                    </div>
+                    <div class="info-group">
+                        <div class="info-label">Amount Paid</div>
+                        <div class="info-value">₹{{ payment.amount }}</div>
+                    </div>
+                    <div class="info-group">
+                        <div class="info-label">Payment Date</div>
+                        <div class="info-value">{{ payment.created_at }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% elif query %}
+        <div class="alert alert-warning alert-custom mt-4 p-4">
+            <h4 class="alert-heading">No Results Found</h4>
+            <p>We couldn't find any application with the Order ID: <strong>{{ query }}</strong></p>
+            <hr>
+            <p class="mb-0">Please verify the Order ID and try again. If you continue to experience issues, contact our support team.</p>
+        </div>
+        {% endif %}
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Page</title>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+        
+        .payment-container {
+            max-width: 650px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .payment-card {
+            border: none;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .payment-header {
+            background: linear-gradient(135deg, #6366F1 0%, #4F46E5 100%);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+        
+        .payment-header h2 {
+            margin: 0;
+            font-weight: 600;
+        }
+        
+        .payment-header p {
+            opacity: 0.8;
+            margin-top: 8px;
+            font-size: 16px;
+        }
+        
+        .payment-logo {
+            background-color: white;
+            height: 60px;
+            width: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+        }
+        
+        .payment-logo i {
+            color: #4F46E5;
+            font-size: 28px;
+        }
+        
+        .payment-content {
+            padding: 30px;
+        }
+        
+        .app-details {
+            background-color: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+        
+        .detail-item {
+            display: flex;
+            margin-bottom: 12px;
+        }
+        
+        .detail-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .detail-label {
+            font-weight: 600;
+            color: #6c757d;
+            width: 130px;
+            flex-shrink: 0;
+        }
+        
+        .detail-value {
+            color: #212529;
+        }
+        
+        .amount-section {
+            text-align: center;
+            margin: 25px 0;
+            padding: 15px;
+            border-top: 1px solid #e9ecef;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .amount-label {
+            font-size: 16px;
+            color: #6c757d;
+            margin-bottom: 5px;
+        }
+        
+        .amount-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #212529;
+        }
+        
+        .pay-button {
+            background: linear-gradient(135deg, #6366F1 0%, #4F46E5 100%);
+            border: none;
+            padding: 14px 20px;
+            font-size: 18px;
+            font-weight: 600;
+            width: 100%;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .pay-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 14px rgba(79, 70, 229, 0.3);
+            background: linear-gradient(135deg, #5254D9 0%, #4338CA 100%);
+        }
+        
+        .security-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 20px;
+            color: #6c757d;
+            font-size: 14px;
+        }
+        
+        .security-info i {
+            margin-right: 8px;
+            color: #4F46E5;
+        }
+        
+        .payment-footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #6c757d;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container payment-container">
+        <div class="card payment-card">
+            <div class="payment-header">
+                <div class="payment-logo">
+                    <i class="fas fa-passport"></i>
+                </div>
+                <h2>Complete Your Payment</h2>
+                <p>Secure payment via Razorpay</p>
+            </div>
+            
+            <div class="payment-content">
+                <div class="app-details">
+                    <div class="detail-item">
+                        <div class="detail-label">Application ID</div>
+                        <div class="detail-value">{{ application.id }}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Name</div>
+                        <div class="detail-value">{{ application.first_name }} {{ application.last_name }}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Email</div>
+                        <div class="detail-value">{{ application.email }}</div>
+                    </div>
+                </div>
+                
+                <div class="amount-section">
+                    <div class="amount-label">Total Amount</div>
+                    <div class="amount-value">₹{{ application.total_amount }}</div>
+                </div>
+                
+                <button id="pay-button" class="btn btn-primary pay-button">
+                    <i class="fas fa-lock me-2"></i> Pay Now
+                </button>
+                
+                <div class="security-info">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Your payment information is secure with 128-bit encryption</span>
+                </div>
+                
+                <form id="razorpay-form" method="POST" action="{{ callback_url }}">
+                    <input type="hidden" name="razorpay_order_id" id="razorpay_order_id">
+                    <input type="hidden" name="razorpay_payment_id" id="razorpay_payment_id">
+                    <input type="hidden" name="razorpay_signature" id="razorpay_signature">
+                    {% csrf_token %}
+                </form>
+            </div>
+        </div>
+        
+        <div class="payment-footer">
+            <p>Need help? Contact our support team at support@example.com</p>
+        </div>
+    </div>
+    
+    <script>
+        var options = {
+            "key": "{{ razorpay_key_id }}",
+            "amount": "{{ order.amount }}",
+            "currency": "INR",
+            "name": "Passport Application",
+            "description": "Payment for Passport Application",
+            "order_id": "{{ order.id }}",
+            "handler": function (response) {
+                document.getElementById('razorpay_order_id').value = response.razorpay_order_id;
+                document.getElementById('razorpay_payment_id').value = response.razorpay_payment_id;
+                document.getElementById('razorpay_signature').value = response.razorpay_signature;
+                document.getElementById('razorpay-form').submit();
+            },
+            "prefill": {
+                "name": "{{ application.first_name }} {{ application.last_name }}",
+                "email": "{{ application.email }}",
+                "contact": "{{ application.phone_number }}"
+            },
+            "theme": {
+                "color": "#4F46E5"
+            }
+        };
+        
+        var rzp1 = new Razorpay(options);
+        
+        document.getElementById('pay-button').onclick = function(e) {
+            e.preventDefault();
+            rzp1.open();
+        }
+    </script>
+</body>
+</html>

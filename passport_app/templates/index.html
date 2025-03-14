@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Passport Application System</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #0047AB;
+            --secondary-color: #1E3A8A;
+            --accent-color: #4BB4E6;
+            --light-bg: #F5F7FA;
+            --dark-bg: #1A2B4B;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light-bg);
+        }
+        
+        .navbar {
+            background-color: var(--primary-color);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            color: white !important;
+        }
+        
+        .hero-section {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            padding: 100px 0;
+            color: white;
+        }
+        
+        .hero-title {
+            font-weight: 700;
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .hero-text {
+            font-size: 1.25rem;
+            margin-bottom: 30px;
+            max-width: 700px;
+        }
+        
+        .btn-primary {
+            background-color: var(--accent-color);
+            border-color: var(--accent-color);
+            font-weight: 600;
+            padding: 10px 25px;
+            border-radius: 50px;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary:hover {
+            background-color: #3a90b8;
+            border-color: #3a90b8;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(74, 180, 230, 0.4);
+        }
+        
+        .module-card {
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            margin-bottom: 30px;
+            border: none;
+            height: 100%;
+        }
+        
+        .module-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .module-card .card-header {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: 600;
+            padding: 15px 20px;
+            border: none;
+        }
+        
+        .module-card .card-body {
+            padding: 25px;
+        }
+        
+        .module-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+        
+        .features-section {
+            padding: 80px 0;
+        }
+        
+        .feature-item {
+            text-align: center;
+            padding: 30px 20px;
+            border-radius: 10px;
+            background-color: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            height: 100%;
+            transition: all 0.3s;
+        }
+        
+        .feature-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature-icon {
+            font-size: 36px;
+            color: var(--accent-color);
+            margin-bottom: 20px;
+        }
+        
+        .login-section {
+            padding: 60px 0;
+            background-color: var(--light-bg);
+        }
+        
+        .login-card {
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+            border: none;
+        }
+        
+        .login-card .card-header {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: 600;
+            padding: 15px 20px;
+            border: none;
+        }
+        
+        .login-tabs .nav-link {
+            color: var(--dark-bg);
+            font-weight: 500;
+            border: none;
+            padding: 15px 20px;
+        }
+        
+        .login-tabs .nav-link.active {
+            color: var(--primary-color);
+            background-color: transparent;
+            border-bottom: 3px solid var(--primary-color);
+        }
+        
+        footer {
+            background-color: var(--dark-bg);
+            color: white;
+            padding: 50px 0 20px;
+        }
+        
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+            text-decoration: none;
+        }
+        
+        .social-icons a {
+            color: white;
+            font-size: 20px;
+            margin-right: 15px;
+            transition: all 0.3s;
+        }
+        
+        .social-icons a:hover {
+            color: var(--accent-color);
+            transform: translateY(-3px);
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 992px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-text {
+                font-size: 1.1rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero-section {
+                padding: 60px 0;
+            }
+            
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .module-card {
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-passport me-2"></i>
+                Online Passport System
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-light text-primary ms-2 px-3" href="#login">Login</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <h1 class="hero-title">Online Passport Application System</h1>
+                    <p class="hero-text">Apply for your passport online with our secure, efficient, and user-friendly system. Track your application status in real-time and get your passport delivered to your doorstep.</p>
+                    <a href="#apply" class="btn btn-primary me-3">
+                        <i class="fas fa-edit me-2"></i>Apply Now
+                    </a>
+                    <a href="#track" class="btn btn-outline-light">
+                        <i class="fas fa-search me-2"></i>Track Application
+                    </a>
+                </div>
+                <div class="col-lg-6 d-none d-lg-block text-center">
+                    <img src="/api/placeholder/500/400" alt="Passport Application" class="img-fluid rounded">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Modules Section -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row text-center mb-5">
+                <div class="col-12">
+                    <h2 class="display-5 fw-bold">Access Modules</h2>
+                    <p class="lead text-muted">Select the appropriate module based on your role</p>
+                </div>
+            </div>
+            <div class="row">
+                <!-- Admin Module -->
+                <div class="col-md-6 col-lg-3 mb-4">
+                    <div class="module-card card">
+                        <div class="card-header">
+                            <i class="fas fa-user-shield me-2"></i>Admin Module
+                        </div>
+                        <div class="card-body text-center">
+                            <div class="module-icon">
+                                <i class="fas fa-user-cog"></i>
+                            </div>
+                            <h5 class="card-title">System Administration</h5>
+                            <p class="card-text">Manage users, configure system settings, and monitor operations.</p>
+                            <a href="{% url 'admin-login' %}" class="btn btn-primary mt-3">Access Admin</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Passport Officer Module -->
+                {% comment %} <div class="col-md-6 col-lg-3 mb-4">
+                    <div class="module-card card">
+                        <div class="card-header">
+                            <i class="fas fa-id-card me-2"></i>Passport Officer
+                        </div>
+                        <div class="card-body text-center">
+                            <div class="module-icon">
+                                <i class="fas fa-stamp"></i>
+                            </div>
+                            <h5 class="card-title">Process Applications</h5>
+                            <p class="card-text">Review and process passport applications after verification.</p>
+                            <a href="#officer-login" class="btn btn-primary mt-3">Access Portal</a>
+                        </div>
+                    </div>
+                </div>
+                 {% endcomment %}
+                <!-- Verification Officer Module -->
+                <div class="col-md-6 col-lg-3 mb-4">
+                    <div class="module-card card">
+                        <div class="card-header">
+                            <i class="fas fa-check-circle me-2"></i>Verification Officer
+                        </div>
+                        <div class="card-body text-center">
+                            <div class="module-icon">
+                                <i class="fas fa-clipboard-check"></i>
+                            </div>
+                            <h5 class="card-title">Verify Documents</h5>
+                            <p class="card-text">Validate applicant's documents and personal information.</p>
+                            <a href="{% url 'login_verifer' %}" class="btn btn-primary mt-3">Access Portal</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- User Module -->
+                <div class="col-md-6 col-lg-3 mb-4">
+                    <div class="module-card card">
+                        <div class="card-header">
+                            <i class="fas fa-user me-2"></i>User Module
+                        </div>
+                        <div class="card-body text-center">
+                            <div class="module-icon">
+                                <i class="fas fa-passport"></i>
+                            </div>
+                            <h5 class="card-title">Apply for Passport</h5>
+                            <p class="card-text">Submit your application and track its progress online.</p>
+                            <a href="{% url 'register_user' %}" class="btn btn-primary mt-3">Access Portal</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section bg-light py-5">
+        <div class="container">
+            <div class="row text-center mb-5">
+                <div class="col-12">
+                    <h2 class="display-5 fw-bold">System Features</h2>
+                    <p class="lead text-muted">Our online passport system offers a range of features to make your application process smooth</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-tachometer-alt"></i>
+                        </div>
+                        <h4>Real-time Tracking</h4>
+                        <p>Track your application status at every stage of the process in real-time.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h4>Secure Process</h4>
+                        <p>End-to-end encryption ensures your personal information is always protected.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-bell"></i>
+                        </div>
+                        <h4>Instant Notifications</h4>
+                        <p>Receive SMS and email notifications about your application status.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <h4>Support System</h4>
+                        <p>24/7 customer support to assist you with any queries or issues.</p>
+                    </div>
+                </div>
+                <div class="col-md-6

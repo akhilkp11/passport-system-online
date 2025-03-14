@@ -1,0 +1,83 @@
+{% extends 'home.html' %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Passport Officers</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-4">
+        <h2 class="mb-3">Passport Officers</h2>
+
+        <!-- Add Passport Officer Form
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                Add New Passport Officer
+            </div>
+            <div class="card-body">
+                <form method="post" action="{% url 'list-passportofficer' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" name="name" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" name="email" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-success">Add Officer</button>
+                </form>
+            </div>
+        </div> -->
+
+        <!-- List of Passport Officers -->
+        <table class="table table-bordered">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Employe Id</th>
+                    <th>Phone Number</th>
+                    <th>Branch Location</th>
+                    <th>Date Of Joining</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for officer in data %}
+                <tr>
+                    <td>{{ officer.id }}</td>
+                    <td>{{ officer.name }}</td>
+                    <td>{{ officer.employee_id }}</td>
+                    <td>{{ officer.email }}</td>
+                    <td>{{ officer.phone_number }}</td>
+                    <td>{{ officer.branch_location }}</td>
+                    <td>{{ officer.date_of_joining }}</td>
+                    <td>{{ officer.status }}</td>
+                    <td>
+                        <a href="{% url 'update-passportofficer' officer.id %}">Update</a>
+                        </td>
+
+                        <td>
+                            <a href="{% url 'delete-passportofficer'  officer.id %}">Delete</a>
+                            </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" class="text-center">No Passport Officers Found</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
+
+{% endblock %}

@@ -1,0 +1,123 @@
+{% extends 'home.html' %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Passport Officer Registration</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f4f4f7;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 30px 0;
+        }
+        .registration-container {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+            padding: 35px;
+        }
+        .form-header {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-10 col-lg-8">
+                <div class="registration-container">
+                    <h2 class="form-header">Passport Officer Registration</h2>
+                    
+                    <form id="officerRegistrationForm" method="post" action="{% url 'add-passportofficer' %}" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="name" class="form-label">Full Name</label>
+                                <input type="text" class="form-control" id="name" name="name" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="email" class="form-label">Email Address</label>
+                                <input type="email" class="form-control" id="email" name="email" required>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="employee_id" class="form-label">Employee ID</label>
+                                <input type="text" class="form-control" id="employee_id" name="employee_id" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="phone_number" class="form-label">Phone Number</label>
+                                <input type="text" class="form-control" id="phone_number" name="phone_number" required>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="branch_location" class="form-label">Branch Location</label>
+                                <input type="text" class="form-control" id="branch_location" name="branch_location" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="assigned_region" class="form-label">Assigned Region</label>
+                                <input type="text" class="form-control" id="assigned_region" name="assigned_region" required>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="date_of_joining" class="form-label">Date of Joining</label>
+                                <input type="date" class="form-control" id="date_of_joining" name="date_of_joining" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="status" class="form-label">Status</label>
+                                <select class="form-control" id="status" name="status" required>
+                                    <option value="active">Active</option>
+                                    <option value="inactive">Inactive</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="UserNaMe" class="form-label">Username</label>
+                                <input type="text" class="form-control" id="UserNaMe" name="UserNaMe" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="PassWoRd" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="PassWoRd" name="PassWoRd" 
+                                    required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                                    title="Must contain at least one number, one uppercase, one lowercase letter, and at least 8 characters">
+                            </div>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg">Register Passport Officer</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        document.getElementById('officerRegistrationForm').addEventListener('submit', function(event) {
+            console.log('Form submitted');
+        });
+    </script>
+</body>
+</html>
+
+{% endblock %}

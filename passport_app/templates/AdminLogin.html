@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - Online Passport Application System</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #0047AB;
+            --secondary-color: #1E3A8A;
+            --accent-color: #4BB4E6;
+            --light-bg: #F5F7FA;
+            --dark-bg: #1A2B4B;
+            --danger-color: #DC3545;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light-bg);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+        }
+        
+        .login-container {
+            width: 100%;
+            max-width: 450px;
+            padding: 15px;
+        }
+        
+        .card {
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border: none;
+        }
+        
+        .card-header {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 25px 15px;
+            border: none;
+        }
+        
+        .admin-icon {
+            font-size: 64px;
+            color: white;
+            margin-bottom: 15px;
+            background-color: var(--accent-color);
+            width: 100px;
+            height: 100px;
+            line-height: 100px;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+        }
+        
+        .card-body {
+            padding: 30px;
+        }
+        
+        .form-control {
+            border-radius: 50px;
+            padding: 12px 20px;
+            height: auto;
+            background-color: #f8f9fa;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s;
+        }
+        
+        .form-control:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 0.2rem rgba(75, 180, 230, 0.25);
+        }
+        
+        .input-group-text {
+            border-radius: 50px 0 0 50px;
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            width: 50px;
+            justify-content: center;
+        }
+        
+        .input-group .form-control {
+            border-radius: 0 50px 50px 0;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            border-radius: 50px;
+            padding: 12px 20px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(30, 58, 138, 0.4);
+        }
+        
+        .forgot-password {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+        
+        .forgot-password:hover {
+            color: var(--secondary-color);
+            text-decoration: underline;
+        }
+        
+        .back-link {
+            color: white;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            display: inline-block;
+            margin-top: 20px;
+        }
+        
+        .back-link:hover {
+            color: var(--accent-color);
+        }
+        
+        .alert {
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: none;
+        }
+        
+        .remember-me {
+            display: flex;
+            align-items: center;
+        }
+        
+        .remember-me input {
+            margin-right: 8px;
+        }
+        
+        .invalid-feedback {
+            margin-left: 10px;
+        }
+        
+        .nav-tabs {
+            border-bottom: none;
+            margin-bottom: 20px;
+        }
+        
+        .nav-tabs .nav-link {
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            margin-right: 10px;
+            color: #6c757d;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .nav-tabs .nav-link.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        /* Animation */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @media (max-width: 576px) {
+            .card-body {
+                padding: 20px;
+            }
+            
+            .admin-icon {
+                font-size: 48px;
+                width: 80px;
+                height: 80px;
+                line-height: 80px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container fade-in">
+        <div class="card">
+            <div class="card-header">
+                <div class="admin-icon">
+                    <i class="fas fa-user-shield"></i>
+                </div>
+                <h3 class="mb-0">Admin Login</h3>
+                <p class="text-white-50 mb-0">Online Passport Application System</p>
+            </div>
+            <div class="card-body">
+                <!-- Alert for demonstration -->
+                <div class="alert alert-danger d-none" id="error-message" role="alert">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    Invalid username or password. Please try again.
+                </div>
+                
+                <!-- Login Form -->
+                <form id="admin-login-form" method="post" action="{% url 'admin-login' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="mb-4">
+                        <label for="username" class="form-label">Username</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="fas fa-user"></i>
+                            </span>
+                            <input type="text" class="form-control" id="username" name="username" placeholder="Enter your username" required>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="password" class="form-label">Password</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="fas fa-lock"></i>
+                            </span>
+                            <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required>
+                        </div>
+                    </div>
+                    
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-sign-in-alt me-2"></i>Login
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <div class="text-center mt-3">
+            <a href="index.html" class="back-link">
+                <i class="fas fa-arrow-left me-1"></i> Back to Home
+            </a>
+        </div>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
