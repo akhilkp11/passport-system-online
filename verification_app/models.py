@@ -2,6 +2,7 @@ from django.db import models
 
 # Create your models here.
 from django.db import models
+from user_app.models import PassportApplication     
 
 class Employee(models.Model):
     employee_id = models.CharField(max_length=20, unique=True)
@@ -32,3 +33,47 @@ class Employee(models.Model):
 
     def __str__(self):
         return f'{self.first_name} {self.last_name} ({self.employee_id})'
+
+
+# class PassportVerification(models.Model):
+#     application_id = models.CharField(max_length=20, unique=True)
+#     passport_application = models.ForeignKey(PassportApplication, on_delete=models.CASCADE)
+#     verification_officer = models.ForeignKey(Employee, on_delete=models.CASCADE)
+#     verification_date_time =models.DateTimeField(auto_now=True)  # Automatically updates on every save
+
+#     verification_status = models.CharField(max_length=20)  # Verified/Rejected  # Verified/Rejected  # Verified/Rejected
+#     remarks = models.TextField(blank=True, null=True)   # Remarks  # Remarks  # Remarks 
+#     admin_verification = models.CharField(max_length=20)  # Admin Verification Status  # Admin Verification Status  # Admin Verification Status
+#     admin_remarks = models.TextField(blank=True, null=True)  # Admin Remarks  # Admin Remarks  # Admin Remarks
+
+
+
+class PassportVerification(models.Model):
+    VERIFIED = 'Verified'
+    REJECTED = 'Rejected'
+    VERIFICATION_STATUS_CHOICES = [
+        (VERIFIED, 'Verified'),
+        (REJECTED, 'Rejected'),
+    ]
+
+    ADMIN_PENDING = 'Pending'
+    ADMIN_APPROVED = 'Approved'
+    ADMIN_REJECTED = 'Rejected'
+    ADMIN_VERIFICATION_CHOICES = [
+        (ADMIN_PENDING, 'Pending'),
+        (ADMIN_APPROVED, 'Approved'),
+        (ADMIN_REJECTED, 'Rejected'),
+    ]
+
+    application_id = models.CharField(max_length=20, unique=True)
+    passport_application = models.ForeignKey(PassportApplication, on_delete=models.CASCADE)
+    verification_officer = models.ForeignKey(Employee, on_delete=models.CASCADE)
+    verification_date_time = models.DateTimeField(auto_now=True)
+    verification_status = models.CharField(max_length=20, choices=VERIFICATION_STATUS_CHOICES, blank=True, null=True)  # Limit to Verified/Rejected
+    remarks = models.TextField(blank=True, null=True)
+    admin_verification = models.CharField(max_length=20, choices=ADMIN_VERIFICATION_CHOICES,  blank=True, null=True)  # Limit to Pending/Approved/Rejected
+    admin_remarks = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return f"Verification for {self.application_id}"
+

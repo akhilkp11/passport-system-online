@@ -5,6 +5,7 @@ from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib import messages
 from passport_app.forms import PassportOfficerForm,VerificationOfficerForm
 from passport_app.models import PassportOfficer,PassportVerifier
+from verification_app.models import Employee, PassportVerification
 from django.views.generic import TemplateView,View,UpdateView
 from .forms import AdminLoginForm
 from django.urls import reverse_lazy
@@ -141,4 +142,50 @@ from user_app.models import PassportApplication
 
 def ListManagePassport_application(request):
     data = PassportApplication.objects.all()
+    # verification_officer = Employee.objects
     return render(request, "admin/List_and_Update_passportapplication.html",{"data": data})
+
+
+def list_verificationofficer(request):
+    data = Employee.objects.all()
+    return render(request, "admin/List_Manage_verification_officer.html",{"data": data})
+
+def view_passport_application(request, pasport_id):
+    passport = PassportApplication.objects.get(id=pasport_id)
+    verification_officer = Employee.objects.all()
+
+      # Try to get PassportVerification data, and if it doesn't exist, set it to None
+    PassportVerification_data= PassportVerification.objects.filter(application_id=pasport_id).first()
+    return render(request, "admin/view_and_assign_passport_application.html", {"passport": passport, "verification_officer": verification_officer, 'PassportVerification_data': PassportVerification_data})
+
+
+def save_passport_application(request):
+    # passport = PassportApplication.objects.get(id=pasport_id)
+    
+    if request.method == "POST":
+        passport_id = request.POST.get("passport_id")
+        selected_verification_officer_id= request.POST.get("verification_officer_id")
+        try:
+            passport = PassportApplication.objects.get(id=passport_id)
+            verification_officer = Employee.objects.get(id= selected_verification_officer_id)
+
+             # Check if a PassportVerification record already exists for this passport_id
+            passport_verification = PassportVerification.objects.filter(application_id=passport_id)
+            if passport_verification.exists():
+                # Update the verification officer if the record already exists
+                passport_verification.update(verification_officer=verification_officer)
+                messages.success(request, "Verification officer updated successfully.")
+            else:
+                # Create a new PassportVerification record if one doesn't exist
+                PassportVerification.objects.create(
+                    application_id=passport_id,
+                    passport_application=passport,
+                    verification_officer=verification_officer
+                )
+                messages.success(request, "Passport verification assigned successfully.")
+       
+            return redirect(ListManagePassport_application)
+        except Employee.DoesNotExist:
+            messages.error(request, "Verificationofficer doesnot exist")
+            return redirect(ListManagePassport_application)
+    return redirect(ListManagePassport_application)

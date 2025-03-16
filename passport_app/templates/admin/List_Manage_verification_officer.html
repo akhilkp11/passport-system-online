@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+{% extends 'home.html' %}
+{% block content %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container mt-4">
+         <!-- List of Passport Officers -->
+         <table class="table table-bordered table-responsive">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Employe Id</th>
+                    <th>Government Id</th>
+                    <th>First Name</th>
+                    <th>Middle Name</th>
+                    <th>Last Name</th>
+                    <th>Official Email</th>
+                    <th>Mobile Number</th>
+                    <th>Designation</th>
+                    <th>Department</th>
+                    <th>Location</th>
+                    <th>Branch Code</th>
+                   
+                    <th>Date Of Joining</th>
+                    <th>Reporting Officer</th>
+
+                    <th>Status</th>
+                    <th>Action</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for d in data %}
+                <tr>
+                    <td>{{d.id}}</td>
+                    <td>{{d.employee_id}}</td>
+                    <td>{{d.govt_id}}</td>
+                    <td>{{d.first_name}}</td>
+                    <td>{{d.middle_name}}</td>
+                    <td>{{d.last_name}}</td>
+                    <td>{{d.official_email}}</td>
+                    <td>{{d.mobile_number}}</td>
+                    <td>{{d.designation}}</td>
+                    <td>{{d.department}}</td>
+                    <td>{{d.location}}</td>
+                    <td>{{d.branch_code}}</td>
+                    <td>{{d.joining_date}}</td>
+                    <td>{{d.reporting_officer}}</td>
+                    <td></td>
+                    <td></td>
+                    
+                </tr>
+                {% endfor %}    
+            </tbody>
+    </div>
+</body>
+</html>
+{% endblock %}

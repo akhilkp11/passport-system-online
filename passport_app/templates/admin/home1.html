@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -127,7 +128,7 @@
                     <hr>
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link active" href="#dashboard-content" data-bs-toggle="tab">
+                            <a class="nav-link active" href="{% url 'home' %}" data-bs-toggle="tab">
                                 <i class="fas fa-tachometer-alt"></i> Dashboard
                             </a>
                         </li>
@@ -314,8 +315,7 @@
                                         <h5 class="card-title mb-0">Application Trends</h5>
                                     </div>
                                     <div class="card-body">
-                                        <div style="height: 300px; background-color: #f8f9fa; border-radius: 5px; display: flex; align-items: center; justify-content: center;">
-                                            <p class="text-muted">Chart Area - Application Trends Over Time</p>
+                                        <div style="height: 300px; background-color: #f8f9fa; border-radius: 5px; display: flex; align-items: center; justify-content: center;"><p class="text-muted">Chart Area - Application Trends Over Time</p>
                                         </div>
                                     </div>
                                 </div>
@@ -570,10 +570,340 @@
                                                     </div>
                                                     <div class="col-md-6 mb-4">
                                                         <div class="card h-100">
-                                                            <div class="card-header">
-                                                                <h5 class="card-title mb-0">General Settings</h5>
+                                                            <div class="card-header"><h5 class="card-title mb-0">General Settings</h5>
                                                             </div>
                                                             <div class="card-body">
                                                                 <form>
                                                                     <div class="mb-3">
                                                                         <label class="form-label">System Name</label>
+                                                                        <input type="text" class="form-control" value="Passport System Admin" />
+                                                                    </div>
+                                                                    <div class="mb-3">
+                                                                        <label class="form-label">Admin Email</label>
+                                                                        <input type="email" class="form-control" value="admin@passportsystem.gov" />
+                                                                    </div>
+                                                                    <div class="mb-3">
+                                                                        <label class="form-label">Timezone</label>
+                                                                        <select class="form-select">
+                                                                            <option selected>UTC</option>
+                                                                            <option>UTC+01:00</option>
+                                                                            <option>UTC+02:00</option>
+                                                                            <option>UTC+03:00</option>
+                                                                            <option>UTC-05:00</option>
+                                                                            <option>UTC-08:00</option>
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="mb-3">
+                                                                        <label class="form-label">Maintenance Mode</label>
+                                                                        <div class="form-check form-switch">
+                                                                            <input class="form-check-input" type="checkbox" id="maintenanceSwitch">
+                                                                            <label class="form-check-label" for="maintenanceSwitch">Enable Maintenance Mode</label>
+                                                                        </div>
+                                                                    </div>
+                                                                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 mb-4">
+                                                        <div class="card h-100">
+                                                            <div class="card-header">
+                                                                <h5 class="card-title mb-0">Security Settings</h5>
+                                                            </div>
+                                                            <div class="card-body">
+                                                                <form>
+                                                                    <div class="mb-3">
+                                                                        <label class="form-label">Session Timeout (minutes)</label>
+                                                                        <input type="number" class="form-control" value="30" min="5" max="120" />
+                                                                    </div>
+                                                                    <div class="mb-3">
+                                                                        <label class="form-label">Password Policy</label>
+                                                                        <div class="form-check mb-2">
+                                                                            <input class="form-check-input" type="checkbox" id="minLengthCheck" checked>
+                                                                            <label class="form-check-label" for="minLengthCheck">Minimum 8 characters</label>
+                                                                        </div>
+                                                                        <div class="form-check mb-2">
+                                                                            <input class="form-check-input" type="checkbox" id="mixedCaseCheck" checked>
+                                                                            <label class="form-check-label" for="mixedCaseCheck">Require mixed case</label>
+                                                                        </div>
+                                                                        <div class="form-check mb-2">
+                                                                            <input class="form-check-input" type="checkbox" id="specialCharCheck" checked>
+                                                                            <label class="form-check-label" for="specialCharCheck">Require special characters</label>
+                                                                        </div>
+                                                                        <div class="form-check mb-2">
+                                                                            <input class="form-check-input" type="checkbox" id="numberCheck" checked>
+                                                                            <label class="form-check-label" for="numberCheck">Require numbers</label>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="mb-3">
+                                                                        <label class="form-label">Two-Factor Authentication</label>
+                                                                        <div class="form-check form-switch">
+                                                                            <input class="form-check-input" type="checkbox" id="twoFactorSwitch" checked>
+                                                                            <label class="form-check-label" for="twoFactorSwitch">Require for all admin users</label>
+                                                                        </div>
+                                                                    </div>
+                                                                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="tab-pane fade" id="logs" role="tabpanel" aria-labelledby="logs-tab">
+                                                <div class="row mb-4">
+                                                    <div class="col-12">
+                                                        <div class="card">
+                                                            <div class="card-header d-flex justify-content-between align-items-center">
+                                                                <h5 class="card-title mb-0">System Logs</h5>
+                                                                <div>
+                                                                    <button class="btn btn-sm btn-outline-secondary me-2">
+                                                                        <i class="fas fa-download"></i> Export
+                                                                    </button>
+                                                                    <button class="btn btn-sm btn-outline-danger">
+                                                                        <i class="fas fa-trash"></i> Clear Logs
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                            <div class="card-body">
+                                                                <div class="mb-3">
+                                                                    <div class="input-group">
+                                                                        <span class="input-group-text"><i class="fas fa-search"></i></span>
+                                                                        <input type="text" class="form-control" placeholder="Search logs...">
+                                                                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">Filter</button>
+                                                                        <ul class="dropdown-menu dropdown-menu-end">
+                                                                            <li><a class="dropdown-item" href="#">All Logs</a></li>
+                                                                            <li><a class="dropdown-item" href="#">Error</a></li>
+                                                                            <li><a class="dropdown-item" href="#">Warning</a></li>
+                                                                            <li><a class="dropdown-item" href="#">Info</a></li>
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="table-responsive">
+                                                                    <table class="table table-sm table-hover">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th>Timestamp</th>
+                                                                                <th>Level</th>
+                                                                                <th>Module</th>
+                                                                                <th>Message</th>
+                                                                                <th>User</th>
+                                                                                <th>IP</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td>2025-03-14 09:45:23</td>
+                                                                                <td><span class="badge bg-danger">ERROR</span></td>
+                                                                                <td>Authentication</td>
+                                                                                <td>Failed login attempt (3rd attempt)</td>
+                                                                                <td>user.johnson</td>
+                                                                                <td>192.168.1.45</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>2025-03-14 09:42:12</td>
+                                                                                <td><span class="badge bg-warning text-dark">WARNING</span></td>
+                                                                                <td>Database</td>
+                                                                                <td>High query load detected</td>
+                                                                                <td>system</td>
+                                                                                <td>localhost</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>2025-03-14 09:30:05</td>
+                                                                                <td><span class="badge bg-info">INFO</span></td>
+                                                                                <td>Application</td>
+                                                                                <td>Application approved #APP-2023-1843</td>
+                                                                                <td>admin.davis</td>
+                                                                                <td>192.168.1.12</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>2025-03-14 09:25:17</td>
+                                                                                <td><span class="badge bg-info">INFO</span></td>
+                                                                                <td>System</td>
+                                                                                <td>Backup completed successfully</td>
+                                                                                <td>system</td>
+                                                                                <td>localhost</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>2025-03-14 09:15:02</td>
+                                                                                <td><span class="badge bg-success">SUCCESS</span></td>
+                                                                                <td>Authentication</td>
+                                                                                <td>User logged in</td>
+                                                                                <td>admin.davis</td>
+                                                                                <td>192.168.1.12</td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                                <nav aria-label="Log navigation">
+                                                                    <ul class="pagination justify-content-center">
+                                                                        <li class="page-item disabled">
+                                                                            <a class="page-link" href="#" tabindex="-1">Previous</a>
+                                                                        </li>
+                                                                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                                                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                                                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                                                        <li class="page-item">
+                                                                            <a class="page-link" href="#">Next</a>
+                                                                        </li>
+                                                                    </ul>
+                                                                </nav>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="tab-pane fade" id="backups" role="tabpanel" aria-labelledby="backups-tab">
+                                                <div class="row">
+                                                    <div class="col-md-4 mb-4">
+                                                        <div class="card">
+                                                            <div class="card-header">
+                                                                <h5 class="card-title mb-0">Backup Settings</h5>
+                                                            </div>
+                                                            <div class="card-body">
+                                                                <form>
+                                                                    <div class="mb-3">
+                                                                        <label class="form-label">Backup Schedule</label>
+                                                                        <select class="form-select">
+                                                                            <option>Every 6 hours</option>
+                                                                            <option>Every 12 hours</option>
+                                                                            <option selected>Daily</option>
+                                                                            <option>Weekly</option>
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="mb-3">
+                                                                        <label class="form-label">Retention Period</label>
+                                                                        <select class="form-select">
+                                                                            <option>7 days</option>
+                                                                            <option selected>30 days</option>
+                                                                            <option>60 days</option>
+                                                                            <option>90 days</option>
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="mb-3">
+                                                                        <label class="form-label">Storage Location</label>
+                                                                        <div class="form-check mb-2">
+                                                                            <input class="form-check-input" type="checkbox" id="localBackup" checked>
+                                                                            <label class="form-check-label" for="localBackup">Local Storage</label>
+                                                                        </div>
+                                                                        <div class="form-check mb-2">
+                                                                            <input class="form-check-input" type="checkbox" id="cloudBackup" checked>
+                                                                            <label class="form-check-label" for="cloudBackup">Cloud Storage</label>
+                                                                        </div>
+                                                                    </div>
+                                                                    <button type="submit" class="btn btn-primary">Save Settings</button>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-8 mb-4">
+                                                        <div class="card">
+                                                            <div class="card-header d-flex justify-content-between align-items-center">
+                                                                <h5 class="card-title mb-0">Backup History</h5>
+                                                                <button class="btn btn-primary btn-sm">
+                                                                    <i class="fas fa-plus"></i> Create Backup Now
+                                                                </button>
+                                                            </div>
+                                                            <div class="card-body">
+                                                                <div class="table-responsive">
+                                                                    <table class="table table-hover">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th>Date & Time</th>
+                                                                                <th>Type</th>
+                                                                                <th>Size</th>
+                                                                                <th>Status</th>
+                                                                                <th>Storage</th>
+                                                                                <th>Actions</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td>Mar 14, 2025 03:00 AM</td>
+                                                                                <td>Automated</td>
+                                                                                <td>1.2 GB</td>
+                                                                                <td><span class="badge bg-success">Completed</span></td>
+                                                                                <td>Local, Cloud</td>
+                                                                                <td>
+                                                                                    <div class="btn-group">
+                                                                                        <button class="btn btn-sm btn-outline-primary"><i class="fas fa-download"></i></button>
+                                                                                        <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-download"></i></button>
+                                                                                    </div>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>Mar 13, 2025 03:00 AM</td>
+                                                                                <td>Automated</td>
+                                                                                <td>1.1 GB</td>
+                                                                                <td><span class="badge bg-success">Completed</span></td>
+                                                                                <td>Local, Cloud</td>
+                                                                                <td>
+                                                                                    <div class="btn-group">
+                                                                                        <button class="btn btn-sm btn-outline-primary"><i class="fas fa-download"></i></button>
+                                                                                        <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-download"></i></button>
+                                                                                    </div>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>Mar 12, 2025 03:00 AM</td>
+                                                                                <td>Automated</td>
+                                                                                <td>1.0 GB</td>
+                                                                                <td><span class="badge bg-success">Completed</span></td>
+                                                                                <td>Local, Cloud</td>
+                                                                                <td>
+                                                                                    <div class="btn-group">
+                                                                                        <button class="btn btn-sm btn-outline-primary"><i class="fas fa-download"></i></button>
+                                                                                        <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-download"></i></button>
+                                                                                    </div>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>Mar 11, 2025 03:00 AM</td>
+                                                                                <td>Automated</td>
+                                                                                <td>1.3 GB</td>
+                                                                                <td><span class="badge bg-success">Completed</span></td>
+                                                                                <td>Local, Cloud</td>
+                                                                                <td>
+                                                                                    <div class="btn-group">
+                                                                                        <button class="btn btn-sm btn-outline-primary"><i class="fas fa-download"></i></button>
+                                                                                        <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-download"></i></button>
+                                                                                    </div>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>Mar 10, 2025 03:00 AM</td>
+                                                                                <td>Automated</td>
+                                                                                <td>1.4 GB</td>
+                                                                                <td><span class="badge bg-success">Completed</span></td>
+                                                                                <td>Local, Cloud</td>
+                                                                                <td>
+                                                                                    <div class="btn-group">
+                                                                                        <button class="btn btn-sm btn-outline-primary"><i class="fas fa-download"></i></button>
+                                                                                        <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-download"></i></button>
+                                                                                    </div>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
