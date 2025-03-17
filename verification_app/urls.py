@@ -8,7 +8,8 @@ urlpatterns = [
  path('register/', views.register_employee, name='register'),
  path('login_verifer/',views.login_view,name='login_verifer'),
  path('login_verifer_method/',views.login_verifer_method,name='login_verifer_method'),
- path('dashboard_verifer/',views.dashboard_verifier_view,name='dashboard_verifer')
+ path('dashboard_verifer/',views.dashboard_verifier_view,name='dashboard_verifer'),
+ path('status_update/',views.status_update_view,name='status_update')
 
     
 

@@ -3,7 +3,7 @@ from django.shortcuts import render
 # Create your views here.
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from .models import Employee
+from .models import Employee,PassportApplication
 
 from django.shortcuts import render, redirect
 from .forms import EmployeeForm
@@ -63,3 +63,10 @@ def login_verifer_method(request):
 
 def dashboard_verifier_view(request):
     return render(request,'dashboard_verifier.html')
+
+def status_update_view(request):
+    return render(request,'status_update.html')
+
+def list_user_view(request):
+    data = PassportApplication.objects.all()
+    return render(request, "officer/List_user.html",{"data": data})

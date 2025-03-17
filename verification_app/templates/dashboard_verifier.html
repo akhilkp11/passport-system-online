@@ -371,19 +371,23 @@
             <aside class="sidebar">
                 <h3>Navigation</h3>
                 <a href="#" class="menu-item active">
-                    <span>📋</span> Pending Verifications
+                    <span>📋</span> user Verifications details
                 </a>
                 <a href="#" class="menu-item">
                     <span>✅</span> Verified Applications
                 </a>
-                <a href="#" class="menu-item">
-                    <span>⚠️</span> Flagged Applications
+                <a href="{% url 'status_update' %}" class="menu-item">
+                    <span>✅</span> Application status
                 </a>
-                <a href="#" class="menu-item">
+
+                {% comment %} <a href="#" class="menu-item">
+                    <span>⚠️</span> Flagged Applications
+                </a> {% endcomment %}
+                {% comment %} <a href="#" class="menu-item">
                     <span>📊</span> Statistics
                 </a>
                 <a href="#" class="menu-item">
-                    <span>🔍</span> Advanced Search
+                    <span>🔍</span> Advanced Search {% endcomment %}
                 </a>
                 <a href="#" class="menu-item">
                     <span>📝</span> Notes & Remarks
