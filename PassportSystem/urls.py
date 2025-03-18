@@ -40,6 +40,7 @@ urlpatterns = [
       path('ListManagePassport_application/', views.ListManagePassport_application, name='ListManagePassport_application'),
       path('view_passport_application/<int:pasport_id>/', views.view_passport_application, name='view_passport_application'),
       path('save_passport_application/', views.save_passport_application, name='save_passport_application'),
+      path('admin_update_passport_status/<int:p_id>/', views.admin_update_passport_status, name='admin_update_passport_status'),
     
 
 

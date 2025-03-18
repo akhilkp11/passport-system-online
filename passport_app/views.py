@@ -13,6 +13,7 @@ from django.urls import reverse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
+from django.views.decorators.csrf import csrf_exempt
 
 
 
@@ -25,9 +26,13 @@ class IndexPageView(View):
 class AdminLogin(View):
     template_name='AdminLogin.html'
     form_class=AdminLoginForm
+
+    @csrf_exempt
     def get(self,request,*args,**kwargs):
         form_instance=self.form_class()
         return render(request,self.template_name,{"form":form_instance})
+    
+    @csrf_exempt
     def post(self,request,*args,**kwargs):
         form_instance=self.form_class(request.POST)
         if form_instance.is_valid():
@@ -188,4 +193,22 @@ def save_passport_application(request):
         except Employee.DoesNotExist:
             messages.error(request, "Verificationofficer doesnot exist")
             return redirect(ListManagePassport_application)
+    return redirect(ListManagePassport_application)
+
+
+def admin_update_passport_status(request, p_id):
+    passport_verification = PassportVerification.objects.get(id=p_id)
+    if request.method == "POST":
+        
+        admin_verification = request.POST.get("admin_action")
+        admin_remarks = request.POST.get("admin_remarks")
+
+        passport_verification.admin_verification = admin_verification
+        passport_verification.admin_remarks = admin_remarks
+        passport_verification.save()
+        messages.success(request, "Passport verification updated successfully.")
+        return redirect(ListManagePassport_application)
+    
+
+
     return redirect(ListManagePassport_application)

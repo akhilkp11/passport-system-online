@@ -300,7 +300,7 @@
                 <p>Enter your credentials to access the verification portal</p>
             </div>
             
-            <form id="loginForm" method="post" action="{% url 'dashboard_verifer' %}">
+            <form id="loginForm" method="post" action="{% url 'login_verifer_method' %}">
                 {% csrf_token %}
                 <div class="form-group">
                     <label for="employeeId">Employee ID</label>

@@ -23,3 +23,8 @@ class EmployeeForm(forms.ModelForm):
         if commit:
             employee.save()
         return employee
+
+
+class LoginForm(forms.Form):
+    e = forms.EmailField(max_length=100, widget=forms.EmailInput(attrs={'placeholder': 'Enter your email'}))
+    password = forms.CharField(max_length=128, widget=forms.PasswordInput(attrs={'placeholder': 'Enter your password'}))

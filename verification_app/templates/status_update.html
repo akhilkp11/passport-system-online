@@ -269,24 +269,28 @@
             <div class="passport-info">
                 <div class="passport-info-row">
                     <div class="passport-info-label">Application Date:</div>
-                    <div class="passport-info-value">{{ application.application_date }}</div>
+                    <div class="passport-info-value">{{ passport_verification.passport_application.created_at }}</div>
                 </div>
                 <div class="passport-info-row">
                     <div class="passport-info-label">Passport Type:</div>
-                    <div class="passport-info-value">{{ application.passport_type }}</div>
+                    <div class="passport-info-value">{{ passport_verification.passport_application.passport_type }}</div>
                 </div>
                 <div class="passport-info-row">
                     <div class="passport-info-label">Current Status:</div>
-                    <div class="passport-info-value">{{ application.current_status }}</div>
+                    <div class="passport-info-value">{{ passport_verification.verification_status }}</div>
                 </div>
             </div>
             
-            <form method="POST">
+            <form method="POST" action="{% url 'update_verifier_status' p_id=passport_verification.id %}">
                 {% csrf_token %}
                 
                 <div class="form-group">
-                    <label for="verified_by">Verified By:</label>
-                    <input type="text" id="verified_by" name="verified_by" class="form-control" required placeholder="Enter verification officer's name">
+                    <div>
+                        <label for="verified_by">Verification Officer:</label>
+                        <h5>Verification By: <span>{{ passport_verification.verification_officer}}</span></h5>
+                        
+                    </div>
+                    <!-- <input type="text" id="verified_by" name="verified_by" class="form-control" value="" required placeholder="Enter verification officer's name"> -->
                 </div>
                 
                 <label>Status:</label>

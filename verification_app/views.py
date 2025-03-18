@@ -3,10 +3,12 @@ from django.shortcuts import render
 # Create your views here.
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from .models import Employee,PassportApplication
-
+from .models import Employee,PassportApplication, PassportVerification
+from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
-from .forms import EmployeeForm
+from .forms import EmployeeForm, LoginForm
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.hashers import check_password
 from django.contrib import messages
 import logging
 
@@ -42,31 +44,79 @@ def login_view(request):
 
 def login_verifer_method(request):
      if request.method == 'POST':
-        employee_id = request.POST.get('employeeId')
+        employee_id = request.POST.get('employeeId')        # geting email from login form
         password = request.POST.get('password')
 
         try:
-            # Fetch the employee based on the provided employee ID
-            employee = Employee.objects.get(employee_id=employee_id)
+            
+            employee = Employee.objects.get(official_email=employee_id)
+            print('employee')
 
-            # Check if the password matches (you should hash passwords in a real application)
-            if employee.password == password:
-                # Successful login
-                # You can set session variables or redirect to the dashboard
-                request.session['employee_id'] = employee.employee_id  # Store employee ID in session
-                return redirect(dashboard_verifier_view)  # Redirect to the dashboard page
+            if check_password(password, employee.password):
+                # Manually log in the user (since you're not using Django's default User model)
+                
+                request.session['emp_id'] = employee.employee_id
+                print(request.session['emp_id'])
+                return redirect('dashboard_verifer') 
             else:
                 messages.error(request, 'Invalid password. Please try again.')
+                return redirect(login_view)  # Redirect to login page
+
+           
         except Employee.DoesNotExist:
             messages.error(request, 'Employee ID not found. Please try again.')
         return redirect(login_view)
 
+
+
+
+
 def dashboard_verifier_view(request):
-    return render(request,'dashboard_verifier.html')
+    passport_applications = PassportApplication.objects.all()
+    
+    emp_id = request.session.get('emp_id')
+    verification_officer = Employee.objects.get(employee_id=emp_id)
+    print(verification_officer.id)
+    passport_verification = PassportVerification.objects.filter(verification_officer=verification_officer)
+    
+    print(passport_verification)
+    context = {
+        'passport_applications': passport_applications,
+        'passport_verification': passport_verification,
+    }
+    return render(request,'dashboard_verifier.html', context)
 
-def status_update_view(request):
-    return render(request,'status_update.html')
+def status_update_view(request, p_id):
+    pssport_verification = PassportVerification.objects.get(id=p_id)    
+    # passport_application = pssport_verification.passport_application
 
-def list_user_view(request):
-    data = PassportApplication.objects.all()
-    return render(request, "officer/List_user.html",{"data": data})
+    # if request.method == 'POST':
+    #     verification_status = request.POST.get('status')
+    #     remarks = request.POST.get('comments')
+    
+    #     pssport_verification.verification_status = verification_status
+    #     pssport_verification.remarks = remarks
+    #     pssport_verification.save()
+    #     return redirect('dashboard_verifer')
+    context ={
+        # 'passport_application': passport_application,
+        'passport_verification': pssport_verification
+    }
+
+    return render(request,'status_update.html', context)
+
+def update_verifier_status(request, p_id):
+    pssport_verification = PassportVerification.objects.get(id=p_id)
+    if request.method == 'POST':
+        verification_status = request.POST.get('status')
+        remarks = request.POST.get('comments')
+    
+        pssport_verification.verification_status = verification_status
+        pssport_verification.remarks = remarks
+        pssport_verification.save()
+        return redirect('dashboard_verifer')
+
+
+def verifier_logout(request):
+    del request.session['emp_id']
+    return redirect(login_view)  # Redirect to login page

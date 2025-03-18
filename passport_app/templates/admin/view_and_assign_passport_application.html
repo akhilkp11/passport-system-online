@@ -256,7 +256,10 @@
                 <button type="submit" class="btn btn-primary">Assign</button>
             </form>
             <hr>
-            <form>
+            {% if PassportVerification_data.verification_status == 'Approved' %}
+            
+            <form method="post" action="{% url 'admin_update_passport_status' p_id=PassportVerification_data.id %}">
+                {% csrf_token %}
                 <h5 class="m-5">Admin Action : 
                     
                     <span>
@@ -269,11 +272,21 @@
                                 <option>Approved</option>
                             </select>
                         </span>
-                        <progressbar>approved</progressbar>
+                        
                     </span>
+
                 </h5>
+                <h5 class="m-5">Admin Verification Status : <span><progressbar class="ms-4">{{PassportVerification_data.admin_verification}}</progressbar></span></h5>
+
+
+                <div class="form-group m-5">
+                    <label for="admin-remarks" class="form-label">Admin Remarks:</label>
+                    <textarea id="admin-remarks" name="admin_remarks" class="form-control" rows="4" placeholder="Enter your remarks here..."></textarea>
+                </div>
+
                 <button type="submit" class="btn btn-primary">Update</button>
             </form>
+            {% endif %} 
                 
             
         </div>

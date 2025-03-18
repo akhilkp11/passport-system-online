@@ -376,7 +376,7 @@
                 <a href="#" class="menu-item">
                     <span>✅</span> Verified Applications
                 </a>
-                <a href="{% url 'status_update' %}" class="menu-item">
+                <a href="" class="menu-item">
                     <span>✅</span> Application status
                 </a>
 
@@ -398,11 +398,15 @@
                 <a href="#" class="menu-item">
                     <span>👤</span> My Profile
                 </a>
+                <a href="{% url 'verifier_logout' %}" class="menu-item">
+                    <span>👤</span> Log out
+                </a>
             </aside>
             
             <section class="verification-area">
                 <div class="section-header">
                     <h2 class="section-title">Passport Verification Queue</h2>
+                    <h3>{{request.session.emp_id}}</h3>
                     <div class="search-box">
                         <input type="text" placeholder="Search by name, application ID...">
                     </div>
@@ -417,37 +421,33 @@
                 
                 <table class="applications-table">
                     <thead>
+                        
                         <tr>
-                            <th>Applicant</th>
-                            <th>Application ID</th>
+                            
+                            <th>Passport Application ID</th>
                             <th>Submission Date</th>
-                            <th>Document Type</th>
+                            
                             <th>Status</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
+                        {% for d in passport_verification %}
                         <tr>
+                           
+                            <td>PS-AP-{{d.application_id}}</td>
+                            <td>{{d.passport_application.created_at}}</td>
+                            
+                            <td><span class="status-badge status-pending">{{d.verification_status}}</span></td>
                             <td>
-                                <div class="applicant-info">
-                                    <img src="/api/placeholder/40/40" alt="Applicant Photo" class="applicant-photo">
-                                    <div>
-                                        <div>John Smith</div>
-                                        <small>john.smith@example.com</small>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>APP-2025-10492</td>
-                            <td>March 12, 2025</td>
-                            <td>New Application</td>
-                            <td><span class="status-badge status-pending">Pending</span></td>
-                            <td>
-                                <button class="action-btn btn-verify">Verify</button>
-                                <button class="action-btn btn-flag">Flag</button>
-                                <button class="action-btn btn-details">Details</button>
+                                <a href="{% url 'status_update' p_id=d.id %}"><button class="action-btn btn-verify">Verify</button></a>
+                                <!-- <button class="action-btn btn-flag">Flag</button> -->
+                                <!-- <button class="action-btn btn-details">Details</button> -->
                             </td>
                         </tr>
-                        <tr>
+                        {% endfor %}
+                        
+                        <!-- <tr>
                             <td>
                                 <div class="applicant-info">
                                     <img src="/api/placeholder/40/40" alt="Applicant Photo" class="applicant-photo">
@@ -523,7 +523,7 @@
                                 <button class="action-btn btn-flag">Flag</button>
                                 <button class="action-btn btn-details">Details</button>
                             </td>
-                        </tr>
+                        </tr> -->
                     </tbody>
                 </table>
                 
