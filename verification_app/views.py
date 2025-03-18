@@ -105,11 +105,24 @@ def update_verifier_status(request, p_id):
         pssport_verification.verification_status = verification_status
         pssport_verification.remarks = remarks
         pssport_verification.save()
+<<<<<<< HEAD
         print('status updated')
+=======
+
+        passport_apllication = pssport_verification.passport_application
+        passport_apllication.application_status = verification_status
+        passport_apllication.save()
+>>>>>>> a4083ade35b14d80bb836244af4ead8764b46c63
         return redirect('dashboard_verifer')
 
 
 def verifier_logout(request):
     del request.session['emp_id']
+<<<<<<< HEAD
     return render(request,'index.html')
     # return redirect(login_view)  # Redirect to login page
+=======
+
+    return render(request,'index.html')
+    # return redirect(login_view)  # Redirect to login page
+>>>>>>> a4083ade35b14d80bb836244af4ead8764b46c63
