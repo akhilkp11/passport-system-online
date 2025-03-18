@@ -206,6 +206,10 @@ def admin_update_passport_status(request, p_id):
         passport_verification.admin_verification = admin_verification
         passport_verification.admin_remarks = admin_remarks
         passport_verification.save()
+
+        passport_application = passport_verification.passport_application
+        passport_application.application_status = admin_verification
+        passport_application.save()
         messages.success(request, "Passport verification updated successfully.")
         return redirect(ListManagePassport_application)
     

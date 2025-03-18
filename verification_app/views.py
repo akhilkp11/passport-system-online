@@ -88,16 +88,7 @@ def dashboard_verifier_view(request):
 
 def status_update_view(request, p_id):
     pssport_verification = PassportVerification.objects.get(id=p_id)    
-    # passport_application = pssport_verification.passport_application
-
-    # if request.method == 'POST':
-    #     verification_status = request.POST.get('status')
-    #     remarks = request.POST.get('comments')
     
-    #     pssport_verification.verification_status = verification_status
-    #     pssport_verification.remarks = remarks
-    #     pssport_verification.save()
-    #     return redirect('dashboard_verifer')
     context ={
         # 'passport_application': passport_application,
         'passport_verification': pssport_verification
@@ -114,9 +105,11 @@ def update_verifier_status(request, p_id):
         pssport_verification.verification_status = verification_status
         pssport_verification.remarks = remarks
         pssport_verification.save()
+        print('status updated')
         return redirect('dashboard_verifer')
 
 
 def verifier_logout(request):
     del request.session['emp_id']
-    return redirect(login_view)  # Redirect to login page
+    return render(request,'index.html')
+    # return redirect(login_view)  # Redirect to login page
