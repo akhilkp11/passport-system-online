@@ -52,7 +52,6 @@ def login_verifer_method(request):
             employee = Employee.objects.get(official_email=employee_id)
             print('employee')
 
-<<<<<<< Updated upstream
             if check_password(password, employee.password):
                 # Manually log in the user (since you're not using Django's default User model)
                 
@@ -64,19 +63,6 @@ def login_verifer_method(request):
                 return redirect(login_view)  # Redirect to login page
 
            
-=======
-            # Check if the password matches (you should hash passwords in a real application)
-            if employee.password == password:
-                # Successful login
-                # You can set session variables or redirect to the dashboard
-                request.session['employee_id'] = employee.employee_id  # Store employee ID in session
-                print(request.user.id,'==============================')
-                print('hai===========================')
-                return redirect(dashboard_verifier_view)  # Redirect to the dashboard page
-            else:
-                messages.error(request, 'Invalid password. Please try again.')
-                print('hello=============================')
->>>>>>> Stashed changes
         except Employee.DoesNotExist:
             messages.error(request, 'Employee ID not found. Please try again.')
         return redirect(login_view)
@@ -104,7 +90,6 @@ def status_update_view(request, p_id):
     pssport_verification = PassportVerification.objects.get(id=p_id)    
     # passport_application = pssport_verification.passport_application
 
-<<<<<<< Updated upstream
     # if request.method == 'POST':
     #     verification_status = request.POST.get('status')
     #     remarks = request.POST.get('comments')
@@ -129,21 +114,15 @@ def update_verifier_status(request, p_id):
         pssport_verification.verification_status = verification_status
         pssport_verification.remarks = remarks
         pssport_verification.save()
+
+        passport_apllication = pssport_verification.passport_application
+        passport_apllication.application_status = verification_status
+        passport_apllication.save()
         return redirect('dashboard_verifer')
 
 
 def verifier_logout(request):
     del request.session['emp_id']
-    return redirect(login_view)  # Redirect to login page
-=======
-def list_user_view(request):
-    data = PassportApplication.objects.all()
-    return render(request, "officer/List_user.html",{"data": data})
 
-from django.contrib.auth import logout
-from django.shortcuts import redirect
-
-def logout_view(request):
-    logout(request)
-    return redirect('login_verifer')  # Redirect to the login page
->>>>>>> Stashed changes
+    return render(request,'index.html')
+    # return redirect(login_view)  # Redirect to login page
