@@ -6,6 +6,7 @@ from django.contrib import messages
 from passport_app.forms import PassportOfficerForm,VerificationOfficerForm
 from passport_app.models import PassportOfficer,PassportVerifier
 from verification_app.models import Employee, PassportVerification
+from user_app.models import PassportApplication
 from django.views.generic import TemplateView,View,UpdateView
 from .forms import AdminLoginForm
 from django.urls import reverse_lazy
@@ -54,7 +55,26 @@ class AdminLogout(View):
 
 
 class HomeView(TemplateView):
+    # passport_application_count = PassportApplication.objects.count()
+    # passport_apporoved_count = PassportApplication.objects.filter(application_status='Approved').count()
+    # passport_rejected_count = PassportApplication.objects.filter(application_status='Rejected').count()
+    # passport_pending_count = PassportApplication.objects.filter(application_status='Pending').count()
+
     template_name = "home.html"
+
+    def get_context_data(self, **kwargs):
+        # Get the context from the parent class
+        context = super().get_context_data(**kwargs)
+        
+        # Add the counts to the context
+        context['passport_application_count'] = PassportApplication.objects.count()
+        context['passport_apporoved_count'] = PassportApplication.objects.filter(application_status='Approved').count()
+        context['passport_rejected_count'] = PassportApplication.objects.filter(application_status='Rejected').count()
+        context['passport_pending_count'] = PassportApplication.objects.filter(application_status='Pending').count()
+        context['passport_processing_count'] = PassportApplication.objects.filter(application_status='Processing').count()
+        context['passport_draft_count'] = PassportApplication.objects.filter(application_status='draft').count()
+
+        return context
 
 
 
