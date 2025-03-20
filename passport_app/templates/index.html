@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+    {% load static %}
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -226,7 +227,7 @@
                     <li class="nav-item">
                         <a class="nav-link active" href="#">Home</a>
                     </li>
-                    <li class="nav-item">
+                    {% comment %} <li class="nav-item">
                         <a class="nav-link" href="#">About</a>
                     </li>
                     <li class="nav-item">
@@ -234,35 +235,42 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Contact</a>
-                    </li>
-                    <li class="nav-item">
+                    </li> {% endcomment %}
+                    {% comment %} <li class="nav-item">
                         <a class="nav-link btn btn-light text-primary ms-2 px-3" href="#login">Login</a>
-                    </li>
+                    </li> {% endcomment %}
                 </ul>
             </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <section class="hero-section">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-6">
-                    <h1 class="hero-title">Online Passport Application System</h1>
-                    <p class="hero-text">Apply for your passport online with our secure, efficient, and user-friendly system. Track your application status in real-time and get your passport delivered to your doorstep.</p>
-                    <a href="#apply" class="btn btn-primary me-3">
-                        <i class="fas fa-edit me-2"></i>Apply Now
-                    </a>
-                    <a href="#track" class="btn btn-outline-light">
-                        <i class="fas fa-search me-2"></i>Track Application
-                    </a>
-                </div>
-                <div class="col-lg-6 d-none d-lg-block text-center">
-                    <img src="/api/placeholder/500/400" alt="Passport Application" class="img-fluid rounded">
-                </div>
+    
+
+<section class="hero-section py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <!-- Left Side Content -->
+            <div class="col-lg-6">
+                <h1 class="hero-title">Online Passport Application System</h1>
+                <p class="hero-text">Apply for your passport online with our secure, efficient, and user-friendly system. Track your application status in real-time and get your passport delivered to your doorstep.</p>
+                
+                {% comment %} <a href="#apply" class="btn btn-primary me-3 mt-3">
+                    <i class="fas fa-edit me-2"></i>Apply Now
+                </a>
+                <a href="#track" class="btn btn-outline-light mt-3">
+                    <i class="fas fa-search me-2"></i>Track Application
+                </a> {% endcomment %}
+            </div>
+
+            <!-- Right Side Image -->
+            <div class="col-lg-6 d-none d-lg-block text-center">
+                <img src="{% static 'images/passport.jpg' %}" alt="Passport Application" class="img-fluid rounded">
+
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
     <!-- Main Modules Section -->
     <section class="py-5">
@@ -273,7 +281,7 @@
                     <p class="lead text-muted">Select the appropriate module based on your role</p>
                 </div>
             </div>
-            <div class="row">
+            <div class="row d-flex flex-row justify-content-center align-items-center">
                 <!-- Admin Module -->
                 <div class="col-md-6 col-lg-3 mb-4">
                     <div class="module-card card">
@@ -373,7 +381,7 @@
                         <p>End-to-end encryption ensures your personal information is always protected.</p>
                     </div>
                 </div>
-                <div class="col-md-6 col-lg-4 mb-4">
+                {% comment %} <div class="col-md-6 col-lg-4 mb-4">
                     <div class="feature-item">
                         <div class="feature-icon">
                             <i class="fas fa-bell"></i>
@@ -381,7 +389,7 @@
                         <h4>Instant Notifications</h4>
                         <p>Receive SMS and email notifications about your application status.</p>
                     </div>
-                </div>
+                </div> {% endcomment %}
                 <div class="col-md-6 col-lg-4 mb-4">
                     <div class="feature-item">
                         <div class="feature-icon">

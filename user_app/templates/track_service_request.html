@@ -1,6 +1,7 @@
 
 <!DOCTYPE html>
 <html lang="en">
+    {% load static %}
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -88,7 +89,7 @@
         }
     </style>
 </head>
-<body>
+<body style="background-image:url('{% static 'images/tracking.jpg' %}'); background-repeat:no-repeat; background-size:cover;" class="min-h-screen flex items-start justify-end px-4 py-4">
     <div class="container track-container">
         <h1 class="page-header">Track Your Service Request</h1>
         <div><a class="text-end" href="{% url 'dashboard' %}"><button class="btn btn-lg btn-outline-primary m-2 ">Back to Dashboard</button></a></div>

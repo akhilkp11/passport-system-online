@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+    {% load static %}
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -104,7 +105,8 @@
         }
         
         .sidebar {
-            background-color: white;
+            background-color: var(--primary-color);
+            color: white;
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
             padding: 20px;
@@ -123,14 +125,14 @@
             gap: 10px;
             padding: 12px 10px;
             border-radius: 6px;
-            color: #555;
+            color: white;
             text-decoration: none;
             transition: background-color 0.3s;
             margin-bottom: 5px;
         }
         
         .menu-item:hover {
-            background-color: #f5f7fa;
+            background-color:rgb(245, 250, 245);
         }
         
         .menu-item.active {
@@ -348,20 +350,20 @@
     <header>
         <div class="container header-content">
             <div class="logo">
-                <img src="/api/placeholder/40/40" alt="Passport Authority Logo">
+                <img src="{% static 'image/verifer_logo.png' %}" alt="Passport Authority Logo">
                 <h1>PassportVerify</h1>
             </div>
-            <nav>
+            {% comment %} <nav>
                 <ul>
                     <li><a href="#" class="active">Dashboard</a></li>
                     <li><a href="#">Applications</a></li>
                     <li><a href="#">Reports</a></li>
                     <li><a href="#">Settings</a></li>
                 </ul>
-            </nav>
+            </nav> {% endcomment %}
             <div class="user-info">
-                <span>Officer ID: PVO-2025-103</span>
-                <div class="user-avatar">MJ</div>
+                <span>Employee ID: {{request.session.emp_id}}</span>
+                
             </div>
         </div>
     </header>
@@ -373,12 +375,12 @@
                 <a href="#" class="menu-item active">
                     <span>📋</span> user Verifications details
                 </a>
-                <a href="#" class="menu-item">
+                {% comment %} <a href="#" class="menu-item">
                     <span>✅</span> Verified Applications
                 </a>
                 <a href="" class="menu-item">
                     <span>✅</span> Application status
-                </a>
+                </a> {% endcomment %}
 
                 {% comment %} <a href="#" class="menu-item">
                     <span>⚠️</span> Flagged Applications
@@ -388,17 +390,19 @@
                 </a>
                 <a href="#" class="menu-item">
                     <span>🔍</span> Advanced Search {% endcomment %}
-                </a>
-                <a href="#" class="menu-item">
+                {% comment %} </a> {% endcomment %}
+                 <a href="#" class="menu-item">
                     <span>📝</span> Notes & Remarks
-                </a>
-                <a href="#" class="menu-item">
+                </a> 
+                
+                {% comment %} <a href="#" class="menu-item">
                     <span>🔔</span> Notifications
-                </a>
+                </a>  {% endcomment %}
+                
                 <a href="#" class="menu-item">
                     <span>👤</span> My Profile
                 </a>
-<<<<<<< Updated upstream
+
                 <a href="{% url 'verifier_logout' %}" class="menu-item">
                     <span>👤</span> Log out
                 </a>
@@ -406,22 +410,21 @@
                 
             <section class="verification-area">
                 <div class="section-header">
-<<<<<<< Updated upstream
+
                     <h2 class="section-title">Passport Verification Queue</h2>
-                    <h3>{{request.session.emp_id}}</h3>
-                    <h2 class="section-title">Passport Verification Queue{{request.user}}</h2>
->>>>>>> Stashed changes
+                    {% comment %} <h3>{{request.session.emp_id}}</h3> {% endcomment %}
+{% comment %} 
                     <div class="search-box">
                         <input type="text" placeholder="Search by name, application ID...">
-                    </div>
+                    </div> {% endcomment %}
                 </div>
                 
-                <div class="filters">
+                {% comment %} <div class="filters">
                     <div class="filter-item active">All (24)</div>
                     <div class="filter-item">Pending (18)</div>
                     <div class="filter-item">Flagged (3)</div>
                     <div class="filter-item">Verified Today (6)</div>
-                </div>
+                </div> {% endcomment %}
                 
                 <table class="applications-table">
                     <thead>

@@ -2,6 +2,7 @@
 {% block content %}
 <!DOCTYPE html>
 <html lang="en">
+    {% load static %}
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -469,7 +470,7 @@
     <div class="container">
         <header>
             <div class="logo">
-                <img src="/api/placeholder/60/60" alt="Passport Office Logo">
+                <img src="{% static 'images/passport_logo.jpg' %}" alt="Passport Office Logo">
                 <div>
                     <h1>Online Passport Application</h1>
                     <p>Complete the form below to apply for a new passport or renew an existing one</p>
@@ -820,7 +821,7 @@
                             <option value="">Select</option>
                             <option value="regular">Regular</option>
                             <option value="official">Official</option>
-                            <option value="diplomatic">Diplomatic</option>
+                            
                         </select>
                     </div>
                     
@@ -867,13 +868,10 @@
                         <input type="file" name="document_national_id" id="document_national_id">
                     </div>
                     <div class="form-group">
-                        <label for="document_birth_cert">Birth Certificate Upload</label>
+                        <label for="document_birth_cert">Photo</label>
                         <input type="file" name="document_birth_cert" id="document_birth_cert">
                     </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="driverLicenseCheck" name="proof_of_identity" value="driverLicense">
-                                <label for="driverLicenseCheck">Driver's License</label>
-                            </div>
+                        
                         </div>
                     </div>
                     
@@ -924,14 +922,7 @@
                                 <input type="checkbox" id="paymentOnline" name="payment_method" value="online" checked>
                                 <label for="paymentOnline">Online Payment (Credit/Debit Card)</label>
                             </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="paymentBankTransfer" name="payment_method" value="bankTransfer">
-                                <label for="paymentBankTransfer">Bank Transfer</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="paymentChallan" name="payment_method" value="challan">
-                                <label for="paymentChallan">Bank Challan</label>
-                            </div>
+                           
                         </div>
                     </div>
                 </div>
@@ -974,11 +965,15 @@
                         <label for="signature_file" class="required">Applicant's Signature</label>
                         <div class="signature-upload">
                             <input type="file" name="signature_file" id="signature_file" accept="image/png, image/jpeg" required>
-                            <button type="button" id="viewSignature" class="btn btn-secondary" disabled>View Uploaded Signature</button>
+                            {% comment %} <button type="button" id="viewSignature" class="btn btn-secondary" disabled>View Uploaded Signature</button> {% endcomment %}
                         </div>
                         <span class="hint">Please upload an image file (.jpg, .png) of your signature</span>
+                        <!-- Preview Section (Hidden by default) -->
+                        <div id="signaturePreviewContainer" style="margin-top: 10px; display: none;">
+                            <img id="signaturePreview" src="#" alt="Uploaded Signature" style="max-width: 300px; max-height: 200px; border: 1px solid #ddd; padding: 5px;"/>
+                        </div>
                     </div>
-                    
+                
                     <div class="form-group">
                         <label for="applicationDate" class="required">Date of Application</label>
                         <input type="date" name="application_date" id="applicationDate" required>

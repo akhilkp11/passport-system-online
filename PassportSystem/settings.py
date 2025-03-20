@@ -69,6 +69,9 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'PassportSystem.wsgi.application'
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [BASE_DIR / 'static']
+
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
@@ -130,4 +133,19 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 RAZORPAY_KEY_ID  = "rzp_test_v3YNZFkmZdITXQ"
-RAZORPAY_KEY_SECRET = "UsPgZyF12gf61Je06u9WQJbC"  
+RAZORPAY_KEY_SECRET = "UsPgZyF12gf61Je06u9WQJbC" 
+
+
+
+
+# settings.py
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'diliyadhanish@gmail.com'
+EMAIL_HOST_PASSWORD = 'yuphroskikdtrcf'
+
+
+

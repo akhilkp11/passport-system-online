@@ -3,6 +3,8 @@ from django.urls import path
 from verification_app import views
 from django.conf import settings
 from django.conf.urls.static import static
+
+from django.contrib.auth import views as auth_views
 urlpatterns = [
     path('register/', views.register_employee, name='register'),
     path('login_verifer/',views.login_view,name='login_verifer'),
@@ -14,7 +16,11 @@ urlpatterns = [
     path('verifier_logout/',views.verifier_logout,name='verifier_logout'),
 
    
-
+path('password_reset/', views.PasswordResetView.as_view(), name='password_reset'),
+    path('password_reset_done/', views.PasswordResetDoneView.as_view(), name='password_reset_done'),
+    path('password_reset_confirm/<uidb64>/<token>/', views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    path('password_reset_complete/', views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
 ]
+
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+    {% load static %}
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -34,7 +35,7 @@
         
         .container {
             display: flex;
-            max-width: 900px;
+            max-width: 500px;
             margin:2%;
             width: 100%;
             box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
@@ -277,23 +278,15 @@
         }
     </style>
 </head>
-<body>
+<body style="background-image:url('{% static 'image/officer.jpg'%}'); background-repeat:no-repeat; background-size:cover;" class="min-h-screen flex items-center justify-center px-4 py-8">
     <div class="container">
-        <div class="login-image">
-            <div class="image-content">
-                <h2>Passport Verification Portal</h2>
-                <p>Secure verification system for passport authorities</p>
-            </div>
-        </div>
+        
         
         <div class="login-form">
             <br>
             <br>
             <br>
-            <div class="logo">
-                <img src="/api/placeholder/50/50" alt="Passport Authority Logo" />
-                <div class="logo-text">National Passport Authority</div>
-            </div>
+            
             
             <div class="form-header">
                 <h1>Verification Officer Login</h1>
@@ -303,10 +296,10 @@
             <form id="loginForm" method="post" action="{% url 'login_verifer_method' %}">
                 {% csrf_token %}
                 <div class="form-group">
-                    <label for="employeeId">Employee ID</label>
+                    <label for="employeeId">Email ID</label>
                     <div class="input-group">
                         <i>👤</i>
-                        <input type="text" id="employeeId" name="employeeId" placeholder="Enter your employee ID" required>
+                        <input type="text" id="employeeId" name="employeeId" placeholder="Enter your Email ID" required>
                     </div>
                 </div>
                 
@@ -319,7 +312,7 @@
                 </div>
                 
                 <div class="forgotten-password">
-                    <a href="#">Forgot password?</a>
+                    <a href="{% url 'password_reset' %}">Forgot password?</a>
                 </div>
                 
                 <div class="remember-me">
