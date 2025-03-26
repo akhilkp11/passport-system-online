@@ -27,7 +27,7 @@ class PassportRegistration(models.Model):
     
 from django.db import models
 
-
+from django.core.validators import RegexValidator
 class PassportApplication(models.Model):
     # Choices for dropdown fields
     GENDER_CHOICES = [
@@ -104,6 +104,14 @@ class PassportApplication(models.Model):
     # 3. Identification Details
     id_type = models.CharField(max_length=20, choices=ID_TYPE_CHOICES)
     id_number = models.CharField(max_length=100)
+    aadhar_number = models.CharField(
+        max_length=12,null=True,blank=True,
+        validators=[RegexValidator(r'^\d{12}$', 'Aadhar Number must be exactly 12 digits.')]
+    )
+    pan_number = models.CharField(
+        max_length=10,null=True,blank=True,
+        validators=[RegexValidator(r'^[A-Z0-9]{10}$', 'PAN Number must be exactly 10 alphanumeric characters.')]
+    )
     
     # 4. Parental Information
     father_name = models.CharField(max_length=200)
@@ -134,7 +142,7 @@ class PassportApplication(models.Model):
     expedited_service = models.BooleanField(default=False)
     total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)  # New Field
     # 9. Declaration & Signature
-    signature_file = models.ImageField(upload_to='signatures/')
+    signature_file = models.ImageField(upload_to='signatures/', blank=True, null=True)
     application_date = models.DateField()
     parental_consent = models.BooleanField(default=False)
     terms_agreed = models.BooleanField(default=False)

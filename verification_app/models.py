@@ -3,7 +3,7 @@ from django.db import models
 # Create your models here.
 from django.db import models
 from user_app.models import PassportApplication     
-
+from django.contrib.auth.hashers import make_password, check_password
 class Employee(models.Model):
     employee_id = models.CharField(max_length=20, unique=True)
     govt_id = models.CharField(max_length=20, unique=True)
@@ -30,24 +30,12 @@ class Employee(models.Model):
     verify_authority = models.TextField()  # Comma-separated values
     password = models.CharField(max_length=128)
     digital_signature = models.ImageField(upload_to='digital_signatures/')
+    last_login = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
         return f'{self.first_name} {self.last_name} ({self.employee_id})'
-
-
-# class PassportVerification(models.Model):
-#     application_id = models.CharField(max_length=20, unique=True)
-#     passport_application = models.ForeignKey(PassportApplication, on_delete=models.CASCADE)
-#     verification_officer = models.ForeignKey(Employee, on_delete=models.CASCADE)
-#     verification_date_time =models.DateTimeField(auto_now=True)  # Automatically updates on every save
-
-#     verification_status = models.CharField(max_length=20)  # Verified/Rejected  # Verified/Rejected  # Verified/Rejected
-#     remarks = models.TextField(blank=True, null=True)   # Remarks  # Remarks  # Remarks 
-#     admin_verification = models.CharField(max_length=20)  # Admin Verification Status  # Admin Verification Status  # Admin Verification Status
-#     admin_remarks = models.TextField(blank=True, null=True)  # Admin Remarks  # Admin Remarks  # Admin Remarks
-
-
-
+  
+    
 class PassportVerification(models.Model):
     VERIFIED = 'Verified'
     REJECTED = 'Rejected'

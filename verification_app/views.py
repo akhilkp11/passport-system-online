@@ -119,109 +119,67 @@ def verifier_logout(request):
     return render(request,'index.html')
     # return redirect(login_view)  # Redirect to login page
 
-    return render(request,'index.html')
-    # return redirect(login_view)  # Redirect to login page
 
-from django.contrib.auth import get_user_model
-from django.contrib.auth.forms import PasswordResetForm, SetPasswordForm
-from django.contrib.auth.tokens import default_token_generator
+
+from django.shortcuts import render, redirect
 from django.core.mail import send_mail
-from django.urls import reverse_lazy
-from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
-from django.views.generic import FormView, TemplateView
-from django.utils.decorators import method_decorator
-from django.views.decorators.csrf import csrf_protect
-from django.views.decorators.cache import never_cache
+from django.contrib import messages
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes, force_str
 from django.conf import settings
-from smtplib import SMTPException
-from django.utils.encoding import force_bytes
-from django.template.loader import render_to_string
-
-UserModel = get_user_model()
-
-def send_email(customer_email, password_reset_link):
-    subject = "Password Reset Request"
-    message = f"""Dear Customer,
-
-You requested a password reset. Click the link below to reset your password:
-
-{password_reset_link}
-
-If you did not request a password reset, please ignore this email.
-
-Thank you for choosing us!
-"""
-    from_email = settings.EMAIL_HOST_USER
-    recipient_list = [customer_email]
-
-    try:
-        send_mail(subject, message, from_email, recipient_list)
-        print(f"Email successfully sent to {customer_email}")
-    except SMTPException as e:
-        print(f"Error sending email to {customer_email}: {e}")
+from django.contrib.auth.hashers import make_password
+from .models import Employee
+from .utils import custom_token_generator
+import socket
 
 
-class PasswordResetView(FormView):
-    template_name = "password_reset.html"
-    success_url = reverse_lazy("password_reset_done")
-    form_class = PasswordResetForm
-
-    @method_decorator(csrf_protect)
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
-
-    def form_valid(self, form):
-        email = form.cleaned_data.get('email')
+def forgot_password(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
         try:
-            user = UserModel.objects.get(email=email)
-            token_generator = default_token_generator
-            token = token_generator.make_token(user)
+            user = Employee.objects.get(official_email=email)
+            
+            token = custom_token_generator.make_token(user)
             uid = urlsafe_base64_encode(force_bytes(user.pk))
-            password_reset_link = f"http://127.0.0.1:8000/password_reset_confirm/{uid}/{token}/"
+            reset_url = request.build_absolute_uri(f'/verification/reset-password/{uid}/{token}/')
 
-            # Send the email with the reset link
-            send_email(email, password_reset_link)
-        except UserModel.DoesNotExist:
-            pass  # Prevent revealing that the email is invalid
+            # Increase socket timeout to avoid connection issues
+            socket.setdefaulttimeout(30)
 
-        return super().form_valid(form)
+            send_mail(
+                'Password Reset Request',
+                f'Click the link to reset your password: {reset_url}',
+                settings.EMAIL_HOST_USER,
+                [email],
+                fail_silently=False,
+            )
+            messages.success(request, 'Password reset link has been sent to your email.')
+            return redirect('forgot_password')
+        except Employee.DoesNotExist:
+            messages.error(request, 'No account found with that email.')
+    
+    return render(request, 'forgot_password.html')
 
 
-class PasswordResetDoneView(TemplateView):
-    template_name = "password_reset_done.html"
-
-
-class PasswordResetConfirmView(FormView):
-    template_name = "password_reset_confirm.html"
-    form_class = SetPasswordForm
-    success_url = reverse_lazy("password_reset_complete")
-    token_generator = default_token_generator
-
-    @method_decorator(never_cache)
-    def dispatch(self, *args, **kwargs):
-        self.user = self.get_user(kwargs['uidb64'])
-        self.validlink = False
-        if self.user is not None and self.token_generator.check_token(self.user, kwargs['token']):
-            self.validlink = True
-            return super().dispatch(*args, **kwargs)
-        return self.render_to_response(self.get_context_data())
-
-    def get_user(self, uidb64):
+def reset_password(request, uidb64, token):
+    if request.method == 'POST':
+        password = request.POST.get('password')
         try:
-            uid = urlsafe_base64_decode(uidb64).decode()
-            return UserModel._default_manager.get(pk=uid)
-        except (TypeError, ValueError, OverflowError, UserModel.DoesNotExist):
-            return None
+            uid = force_str(urlsafe_base64_decode(uidb64))
+            user = Employee.objects.get(pk=uid)
+            
+            if custom_token_generator.check_token(user, token):  # Using custom_token_generator for checking token
+                user.password = make_password(password)  # Hash the new password before saving
+                user.save()
+                
+                messages.success(request, 'Your password has been reset successfully!')
+                return redirect('login_verifer')
+            else:
+                messages.error(request, 'Invalid or expired token.')
+        except (Employee.DoesNotExist, ValueError, TypeError):
+            messages.error(request, 'Something went wrong. Try again.')
 
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs['user'] = self.user  # Important! Pass the user to the form
-        return kwargs
-
-    def form_valid(self, form):
-        form.save()
-        return super().form_valid(form)
+    return render(request, 'reset_password.html')
 
 
-class PasswordResetCompleteView(TemplateView):
-    template_name = "password_reset_complete.html"
+
