@@ -208,11 +208,6 @@ def application_form_view(request):
                 application.signature_file = signature_file
                 application.save()
 
-            # Save Signature File
-            # if 'signature_file' in files:
-            #     application.signature_file = files['signature_file']
-            #     application.save()
-
             # Save Uploaded Documents
             for file_key, file_value in files.items():
                 if file_key.startswith('document_'):
